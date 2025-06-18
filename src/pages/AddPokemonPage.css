@@ -1,0 +1,72 @@
+.add-pokemon-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 120px 5% 40px;
+}
+
+.add-pokemon-form {
+  padding: 40px;
+  background-color: rgba(10, 25, 47, 0.85);
+  border: 1px solid rgba(200, 200, 200, 0.2);
+  border-radius: 12px;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.add-pokemon-form h1 {
+  font-size: 2.5rem;
+  color: #ffcb05;
+  text-align: center;
+  text-shadow: 2px 2px 4px #3b4cca;
+}
+
+.search-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-section input {
+  flex-grow: 1; /* Faz o input ocupar o espaço disponível */
+}
+
+.search-section button {
+  padding: 12px 20px;
+  white-space: nowrap; /* Impede que o texto do botão quebre linha */
+}
+
+.preview-section {
+  border: 2px dashed #334155;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.preview-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+.preview-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffcb05;
+  text-transform: capitalize;
+}
+
+.preview-type {
+  font-size: 1.2rem;
+  color: #cbd5e1;
+  text-transform: capitalize;
+}
+
+.error-message {
+  color: #ef4444; /* Vermelho */
+  text-align: center;
+  font-weight: bold;
+}

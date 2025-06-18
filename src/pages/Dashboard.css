@@ -1,0 +1,31 @@
+/* Container principal que ocupa a tela */
+.dashboard-container {
+  
+  width: 100%;
+  min-height: 100vh;
+  padding: 120px 5% 40px; /* Espaço para a navbar e na parte inferior */
+}
+
+.dashboard-title {
+  margin-top: 50px;
+  font-size: 3rem;
+  color: #ffcb05;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 4px #3b4cca;
+}
+
+.loading-text {
+  color: #f0f0f0;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* A classe que agora vai funcionar corretamente para criar a grade */
+.trainers-grid {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha */
+  justify-content: center; /* Centraliza os cards horizontalmente */
+  gap: 30px; /* Mantém o espaçamento entre os cards */
+}
+

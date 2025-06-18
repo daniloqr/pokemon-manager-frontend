@@ -1,0 +1,120 @@
+.auditoria-container {
+  max-width: 1400px;
+  margin: 100px auto 40px;
+  padding: 20px;
+  color: #f0f0f0; /* Cor padrão para o texto */
+}
+
+.auditoria-title {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 2.8rem;
+  color: #ffcb05;
+  margin-bottom: 30px;
+}
+
+.log-table-container {
+  background-color: rgba(10, 25, 47, 0.85);
+  border-radius: 8px;
+  padding: 10px;
+  overflow-x: auto; /* Permite rolagem horizontal em telas pequenas */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #334155;
+}
+
+th {
+  font-size: 1.1rem;
+  color: #ffcb05;
+}
+
+tbody tr:hover {
+  background-color: rgba(59, 76, 202, 0.2);
+}
+
+/* --- ALTERAÇÃO PRINCIPAL AQUI --- */
+td {
+  white-space: nowrap;
+  color: #e5e7eb; /* Um branco mais claro e suave para melhor leitura */
+  vertical-align: middle; /* Alinha o texto verticalmente no meio da célula */
+}
+
+td[data-label="Detalhes"] {
+  white-space: normal; /* Permite que os detalhes quebrem a linha */
+}
+
+.action-tag {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: white;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.action-tag.action-exclusão_de_treinador, 
+.action-tag.action-liberou_pokémon,
+.action-tag.action-removeu_item {
+  background-color: #d9534f; /* Vermelho para exclusões */
+}
+
+.action-tag.action-depositou_pokémon { 
+  background-color: #f0ad4e; /* Laranja para ações neutras */
+}
+
+.action-tag.action-retirou_pokémon,
+.action-tag.action-adicionou_item,
+.action-tag.action-adicionou_pokedex {
+  background-color: #5cb85c; /* Verde para adições */
+}
+
+.action-tag.action-cadastro_treinador { 
+  background-color: #0275d8; /* Azul para cadastros */
+}
+
+.action-tag.action-editou_pokemon,
+.action-tag.action-salvou_ficha_treinador,
+.action-tag.action-editou_item { 
+  background-color: #5bc0de; /* Azul claro para edições */
+}
+
+/* --- RESPONSIVIDADE (SEM ALTERAÇÕES) --- */
+@media (max-width: 768px) {
+  thead {
+    display: none;
+  }
+  tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 10px;
+  }
+  td {
+    display: block;
+    text-align: right;
+    border-bottom: 1px dashed #334155;
+    padding-left: 50%;
+    position: relative;
+  }
+  td:last-child {
+    border-bottom: none;
+  }
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    font-weight: bold;
+    color: #ffcb05;
+  }
+}

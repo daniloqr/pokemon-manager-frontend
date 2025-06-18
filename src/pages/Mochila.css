@@ -1,0 +1,232 @@
+.mochila-container {
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 80px auto 0 auto;
+  background-color: rgba(10, 25, 47, 0.8);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.mochila-title {
+  font-size: 2.8rem;
+  color: #ffcb05;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px rgba(255, 203, 5, 0.5);
+}
+
+.add-item-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 50px;
+}
+
+.add-item-form input {
+  padding: 12px 15px;
+  border: 2px solid #3b4cca;
+  border-radius: 8px;
+  background-color: #1e3a8a;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-item-form input.item-input {
+  width: 300px;
+}
+
+.add-item-form input.quantity-input {
+  width: 80px;
+  text-align: center;
+  -moz-appearance: textfield; /* Remove setas em Firefox */
+}
+
+/* Remove setas em Chrome, Safari, etc. */
+.add-item-form input.quantity-input::-webkit-outer-spin-button,
+.add-item-form input.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.add-item-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.add-item-form input:focus {
+  background-color: #2a3a9a;
+  box-shadow: 0 0 15px rgba(59, 76, 202, 0.7);
+}
+
+.add-item-form button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffcb05;
+  color: #1e3a8a;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-item-form button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 203, 5, 0.7);
+}
+
+.item-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.item-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 15px 20px;
+  border-radius: 8px;
+  border-left: 5px solid #3b4cca;
+  transition: all 0.2s ease-in-out;
+}
+
+.item-list li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.item-name {
+  font-size: 1.2rem;
+}
+
+.item-quantity {
+  font-size: 1rem;
+  color: #a0a0a0;
+  margin-left: 8px;
+}
+
+.remove-item-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: #cc3b3b;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remove-item-button:hover {
+  background-color: #a32f2f;
+}
+
+.item-actions, .edit-quantity-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-item-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: #3b4cca;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.edit-item-button:hover {
+  background-color: #2a3a9a;
+}
+
+.quantity-input-edit {
+  width: 70px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #3b4cca;
+  border-radius: 6px;
+  background-color: #f0f8ff;
+  color: #1e3a8a;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.save-button, .cancel-edit-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.save-button {
+  background-color: #22c55e;
+  color: white;
+}
+.save-button:hover {
+  background-color: #16a34a;
+}
+
+.cancel-edit-button {
+  background-color: #64748b;
+  color: white;
+}
+.cancel-edit-button:hover {
+  background-color: #475569;
+}
+
+/* ---- RESPONSIVIDADE PARA CELULAR ---- */
+@media (max-width: 600px) {
+  .mochila-container {
+    padding: 25px 5vw;
+    margin-top: 40px;
+    max-width: 98vw;
+  }
+  .mochila-title {
+    font-size: 1.5rem;
+  }
+  .add-item-form {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .add-item-form input,
+  .add-item-form button {
+    width: 100%;
+    min-width: unset;
+    font-size: 1rem;
+    padding: 10px;
+    text-align: left;
+  }
+  .item-list {
+    gap: 8px;
+  }
+  .item-list li {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 8px;
+  }
+  .item-actions, .edit-quantity-section {
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 7px;
+    align-items: stretch;
+  }
+  .item-name {
+    font-size: 1rem;
+  }
+  .quantity-input-edit {
+    width: 100%;
+    font-size: 1rem;
+  }
+}

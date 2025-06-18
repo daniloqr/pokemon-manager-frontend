@@ -1,0 +1,183 @@
+/* Container que envolve a página, garantindo espaçamento da navbar e centralização */
+.ficha-body {
+  margin-top: 150px;
+  padding: 100px 20px 40px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* O "papel" da ficha, com largura máxima */
+.ficha-container {
+  max-width: 960px;
+  width: 100%;
+  margin: auto;
+  font-family: 'Inter', sans-serif;
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+/* Cabeçalho principal com título e botão */
+.ficha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.ficha-header h1 {
+  color: #212529;
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Seções de conteúdo */
+.secao {
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.secao h2 {
+  font-size: 1.5rem;
+  color: #343a40;
+  text-align: left;
+  margin: -20px -20px 20px -20px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  border-radius: 6px 6px 0 0;
+}
+
+/* Layout em Grid para os formulários */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 20px 30px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-field label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.form-field span {
+  font-size: 1rem;
+  color: #212529;
+  padding: 6px 0;
+}
+
+/* Inputs e Textarea */
+input[type="text"], input[type="number"], textarea {
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+textarea { 
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Grid de Atributos e Perícias */
+.grid-colunas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.coluna h3 {
+  font-size: 1.25rem;
+  color: #343a40;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.atributo-bloco { margin-bottom: 20px; }
+.atributo-bloco p { display: flex; justify-content: space-between; align-items: center; }
+.atributo-bloco strong { color: #0056b3; margin-bottom: 5px; display: block; }
+.pericias { list-style: none; padding: 0; }
+.pericias li { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; flex-wrap: wrap; }
+.checkbox-linha { display: flex; align-items: center; gap: 4px; }
+.checkbox-linha input[type="checkbox"] { margin: 0; transform: scale(1.1); cursor: pointer; accent-color: #212529; }
+.soma-total { font-size: 0.9rem; color: #6c757d; font-weight: bold; margin-left: 8px; }
+
+/* Botão de Editar/Salvar */
+.botao-editar {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.botao-editar:hover {
+  background-color: #0056b3;
+}
+
+/* --- MEDIA QUERY PARA RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+  .form-grid,
+  .grid-colunas {
+    grid-template-columns: 1fr;
+  }
+.ficha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 20px;
+  /* AUMENTE O VALOR DESTA LINHA */
+  margin-bottom: 40px; /* Aumentado de 30px para 40px para criar mais espaço */
+}
+  .ficha-header h1 {
+    text-align: center;
+    font-size: 1.8rem;
+  }
+  .botao-editar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .pericias li, .atributo-bloco p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

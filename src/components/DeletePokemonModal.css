@@ -1,0 +1,62 @@
+.delete-modal-content {
+  padding: 20px;
+  color: #333;
+}
+.delete-modal-content h2 {
+  text-align: center;
+  margin-top: 0;
+  color: #d9534f; /* Vermelho perigo */
+}
+.delete-modal-content p {
+  line-height: 1.5;
+  text-align: center;
+}
+.reason-input-group {
+  margin: 20px 0;
+}
+.reason-input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.reason-input-group textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+}
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+.delete-modal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cancel-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+.confirm-delete-button {
+  background-color: #d9534f;
+  color: white;
+}
+.confirm-delete-button:hover {
+  background-color: #c9302c;
+}
+.confirm-delete-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}

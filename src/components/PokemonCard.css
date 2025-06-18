@@ -1,0 +1,192 @@
+.pokemon-card {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #334155;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.pokemon-card-image {
+  height: 180px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(10, 25, 47, 0.7);
+}
+
+.pokemon-card-info {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemon-name {
+  font-size: 1.5rem;
+  margin: 0 0 10px 0;
+  color: #ffcb05;
+  text-transform: capitalize;
+}
+
+.pokemon-details {
+  font-size: 1rem;
+  margin: 2px 0;
+  color: #cbd5e1;
+}
+
+/* --- ESTILOS PARA A BARRA DE HP --- */
+.hp-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.hp-bar-label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.hp-bar-background {
+  flex-grow: 1;
+  height: 22px;
+  background-color: #334155;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #475569;
+}
+
+.hp-bar-progress {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* --- CLASSES DE COR QUE ESTAVAM FALTANDO --- */
+.hp-bar-progress.hp-high {
+  background-color: #22c55e; /* Verde */
+}
+.hp-bar-progress.hp-medium {
+  background-color: #facc15; /* Amarelo */
+}
+.hp-bar-progress.hp-low {
+  background-color: #ef4444; /* Vermelho */
+}
+
+.hp-bar-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* --- Estilos para o formulário de edição --- */
+.edit-stats-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin: 10px 0;
+}
+.edit-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.edit-field label {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+.edit-field input {
+  width: 80px;
+  padding: 4px 8px;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  color: #f0f0f0;
+  text-align: right;
+  -moz-appearance: textfield;
+}
+.edit-field input::-webkit-outer-spin-button,
+.edit-field input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* --- Estilos para os botões de ação --- */
+.pokemon-card-actions {
+  padding: 15px 15px 0 15px; /* Ajustado para não ter padding embaixo */
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+}
+.pokemon-card-actions button {
+  flex-grow: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.pokemon-card-actions button:disabled {
+  background-color: #475569;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.pokemon-edit-button { background-color: #3b4cca; color: white; }
+.pokemon-edit-button:hover { background-color: #2a3a9a; }
+.pokemon-deposit-button { background-color: #64748b; color: white; }
+.pokemon-deposit-button:hover { background-color: #475569; }
+.pokemon-withdraw-button { background-color: #22c55e; color: white; }
+.pokemon-withdraw-button:hover { background-color: #16a34a; }
+.pokemon-delete-button { background-color: #d9534f; color: white; }
+.pokemon-delete-button:hover { background-color: #c9302c; }
+.pokemon-save-button { background-color: #22c55e; color: white; }
+.pokemon-save-button:hover { background-color: #16a34a; }
+.pokemon-cancel-button { background-color: #64748b; color: white; }
+.pokemon-cancel-button:hover { background-color: #475569; }
+
+/* --- Responsividade do Card --- */
+@media (max-width: 400px) {
+  .pokemon-card-actions {
+    flex-direction: column;
+  }
+}
+
+.pokemon-card.is-small .pokemon-card-image {
+  height: 100px; /* Diminui a altura da imagem */
+}
+
+.pokemon-card.is-small .pokemon-card-info {
+  padding: 10px; /* Diminui o padding interno */
+}
+
+.pokemon-card.is-small .pokemon-name {
+  font-size: 1.1rem; /* Diminui a fonte do nome */
+  margin-bottom: 5px;
+}
+
+.pokemon-card.is-small .pokemon-details {
+  font-size: 0.8rem; /* Diminui a fonte dos detalhes */
+}

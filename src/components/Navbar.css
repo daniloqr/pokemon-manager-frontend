@@ -1,0 +1,80 @@
+.navbar {
+  width: 100%;
+  padding: 15px 5%;
+  background-color: rgba(10, 25, 47, 0.85);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.2);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  flex-wrap: wrap; 
+  gap: 10px;
+}
+
+.navbar-brand a {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffcb05;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px #3b4cca;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.welcome-message {
+  color: #d0d0d0;
+  font-size: 1rem;
+}
+
+.navbar-links a {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.navbar-links a:hover {
+  background-color: #334155;
+}
+
+.logout-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #cc3b3b;
+  color: #f0f0f0;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #a32f2f;
+}
+
+/* --- RESPONSIVIDADE PARA A NAVBAR --- */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .navbar-links {
+    width: 100%;
+    margin-top: 10px;
+    justify-content: center;
+  }
+}
