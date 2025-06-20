@@ -23,8 +23,8 @@ const TrainerPage = ({ user, onLogout }) => {
       try {
         setLoading(true);
         const [trainerRes, pokemonsRes] = await Promise.all([
-          axios.get(`http://localhost:3001/user/${id}`),
-          axios.get(`http://localhost:3001/trainer/${id}/pokemons`)
+          axios.get(`${API_URL}/user/${id}`),
+          axios.get(`${API_URL}/trainer/${id}/pokemons`)
         ]);
         setTrainerInfo(trainerRes.data);
         setPokemonTeam(pokemonsRes.data);
@@ -35,13 +35,13 @@ const TrainerPage = ({ user, onLogout }) => {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, API_URL]);
 
   const handleDepositPokemon = async (pokemonId, pokemonName) => {
     const isConfirmed = window.confirm(`Tem certeza que deseja depositar ${pokemonName}?`);
     if (!isConfirmed) return;
     try {
-      await axios.put(`http://localhost:3001/pokemon/${pokemonId}/deposit`);
+      await axios.put(`${API_URL}/pokemon/${pokemonId}/deposit`);
       setPokemonTeam(currentTeam => currentTeam.filter(p => p.id !== pokemonId));
       alert(`${pokemonName} foi enviado para o depósito.`);
     } catch (error) {
@@ -67,7 +67,7 @@ const TrainerPage = ({ user, onLogout }) => {
     if (!deletingPokemon) return;
     console.log(`Excluindo ${deletingPokemon.name} pelo motivo: ${reason}`);
     try {
-      await axios.delete(`http://localhost:3001/pokemon/${deletingPokemon.id}`);
+      await axios.delete(`${API_URL}/pokemon/${deletingPokemon.id}`);
       setPokemonTeam(currentTeam => currentTeam.filter(p => p.id !== deletingPokemon.id));
       alert(`${deletingPokemon.name} foi excluído com sucesso!`);
       handleCloseDeleteModal();
