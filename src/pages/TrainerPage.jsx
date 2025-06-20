@@ -16,7 +16,7 @@ const TrainerPage = ({ user, onLogout }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deletingPokemon, setDeletingPokemon] = useState(null);
 
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
   
   useEffect(() => {
     const fetchData = async () => {

@@ -20,7 +20,7 @@ const AddPokemonPage = ({ user, onLogout }) => {
   const [level, setLevel] = useState('');
 
   // Define a URL base da API do seu backend a partir da variável de ambiente Vite
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Função para buscar dados na PokeAPI
   const handleFetchPokemon = async () => {

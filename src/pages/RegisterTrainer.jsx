@@ -11,8 +11,8 @@ const RegisterTrainer = ({ user, onLogout }) => {
   const [imageFile, setImageFile] = useState(null); 
   const navigate = useNavigate();
 
-  // Use a variável de ambiente VITE_API_URL
-  const API_URL = import.meta.env.VITE_API_URL;
+  // Use a variável de ambiente VITE_API_BASE_URL
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleFileChange = (event) => {
     setImageFile(event.target.files[0]);

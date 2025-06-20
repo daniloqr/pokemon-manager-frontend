@@ -10,7 +10,7 @@ const Mochila = ({ user, onLogout }) => {
   const [editingItemId, setEditingItemId] = useState(null);
   const [editQuantity, setEditQuantity] = useState(0);
 
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (user) {

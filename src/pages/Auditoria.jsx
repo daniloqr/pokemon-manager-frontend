@@ -8,7 +8,7 @@ const Auditoria = ({ user, onLogout }) => {
   const [loading, setLoading] = useState(true);
 
   // Define a URL base da API a partir da variável de ambiente Vite
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     axios.get(`${API_URL}/auditoria`)

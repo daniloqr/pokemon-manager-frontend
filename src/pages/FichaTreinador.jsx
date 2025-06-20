@@ -21,8 +21,8 @@ const FichaTreinador = ({ user, onLogout }) => {
   const [dados, setDados] = useState(dadosIniciais);
   const [loading, setLoading] = useState(true);
 
-  // Use a variável de ambiente VITE_API_URL
-  const API_URL = import.meta.env.VITE_API_URL;
+  // Use a variável de ambiente VITE_API_BASE_URL
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (!userId) return;

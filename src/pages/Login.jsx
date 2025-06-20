@@ -10,7 +10,7 @@ const Login = ({ onLogin }) => {
   const navigate = useNavigate();
 
   // Define a URL base da API a partir da variável de ambiente Vite
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
