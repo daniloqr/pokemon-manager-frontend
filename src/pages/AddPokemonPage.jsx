@@ -19,6 +19,9 @@ const AddPokemonPage = ({ user, onLogout }) => {
   // Estado para o único campo manual que restou
   const [level, setLevel] = useState('');
 
+  // Define a URL base da API do seu backend a partir da variável de ambiente Vite
+  const API_URL = import.meta.env.VITE_API_URL;
+
   // Função para buscar dados na PokeAPI
   const handleFetchPokemon = async () => {
     if (!pokedexNumber) return;
@@ -62,8 +65,8 @@ const AddPokemonPage = ({ user, onLogout }) => {
     };
 
     try {
-      // Envia os dados para a nossa API
-      await axios.post('http://localhost:3001/pokemons', pokemonData);
+      // Envia os dados para a nossa API (agora com API_URL)
+      await axios.post(`${API_URL}/pokemons`, pokemonData);
       alert('Pokémon adicionado com sucesso!');
       navigate(`/trainer/${trainerId}`);
     } catch (error) {
