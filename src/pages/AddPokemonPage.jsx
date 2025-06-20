@@ -6,6 +6,9 @@ import Navbar from '../components/Navbar';
 import './RegisterTrainer.css';
 import './AddPokemonPage.css';
 
+// Define a URL base da API do seu backend a partir da variável de ambiente Vite
+const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
 const AddPokemonPage = ({ user, onLogout }) => {
   const { id: trainerId } = useParams();
   const navigate = useNavigate();
@@ -19,9 +22,6 @@ const AddPokemonPage = ({ user, onLogout }) => {
   // Estado para o único campo manual que restou
   const [level, setLevel] = useState('');
 
-  // Define a URL base da API do seu backend a partir da variável de ambiente Vite
-  const API_URL = import.meta.env.VITE_API_BASE_URL;
-
   // Função para buscar dados na PokeAPI
   const handleFetchPokemon = async () => {
     if (!pokedexNumber) return;
@@ -29,19 +29,17 @@ const AddPokemonPage = ({ user, onLogout }) => {
     setFetchError(null);
     setPokemonPreview(null);
     try {
-      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokedexNumber}`);
+      // A chamada para a PokeAPI externa continua a mesma
+      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokedexNumber.toLowerCase()}`);
       const data = response.data;
       
-      // Monta o objeto de preview com os dados da API
       setPokemonPreview({
         name: data.name,
-        // Pega a URL da arte oficial, que é de alta qualidade
         imageUrl: data.sprites.other['official-artwork'].front_default,
-        // Junta os tipos (ex: "grass, poison")
         type: data.types.map(t => t.type.name).join(', '),
       });
     } catch (error) {
-      setFetchError('Pokémon não encontrado. Verifique o número.');
+      setFetchError('Pokémon não encontrado. Verifique o número ou nome.');
       console.error("Erro ao buscar na PokeAPI:", error);
     } finally {
       setIsFetching(false);
@@ -65,8 +63,8 @@ const AddPokemonPage = ({ user, onLogout }) => {
     };
 
     try {
-      // Envia os dados para a nossa API (agora com API_URL)
-      await axios.post(`${API_URL}/pokemons`, pokemonData);
+      // Envia os dados para a nossa API (agora usando a variável apiUrl)
+      await axios.post(`${apiUrl}/pokemons`, pokemonData);
       alert('Pokémon adicionado com sucesso!');
       navigate(`/trainer/${trainerId}`);
     } catch (error) {
@@ -77,56 +75,55 @@ const AddPokemonPage = ({ user, onLogout }) => {
   return (
     <>
       <Navbar user={user} onLogout={onLogout} />
-      <div className="add-pokemon-container">
-        <form className="add-pokemon-form" onSubmit={handleSubmit}>
-          <h1>Adicionar Novo Pokémon</h1>
-          
-          {/* Seção de Busca */}
-          <div className="input-group">
-            <label htmlFor="pokedexNumber">Número do Pokémon na Pokédex</label>
-            <div className="search-section">
-              <input
-                type="number"
-                id="pokedexNumber"
-                value={pokedexNumber}
-                onChange={(e) => setPokedexNumber(e.target.value)}
-                placeholder="Ex: 25 para Pikachu"
-              />
-              <button type="button" onClick={handleFetchPokemon} disabled={isFetching}>
-                {isFetching ? 'Buscando...' : 'Buscar'}
-              </button>
-            </div>
-          </div>
-          
-          {/* Seção de Preview e Erro */}
-          {fetchError && <p className="error-message">{fetchError}</p>}
-          
-          {pokemonPreview && (
-            <div className="preview-section">
-              <img src={pokemonPreview.imageUrl} alt={pokemonPreview.name} className="preview-image" />
-              <h2 className="preview-name">{pokemonPreview.name}</h2>
-              <p className="preview-type">{pokemonPreview.type}</p>
-            </div>
-          )}
-
-          {/* Seção de Nível (só aparece após a busca) */}
-          {pokemonPreview && (
+      <div className="page-container">
+        <div className="add-pokemon-container">
+            <form className="add-pokemon-form" onSubmit={handleSubmit}>
+            <h1>Adicionar Novo Pokémon</h1>
+            
             <div className="input-group">
-              <label htmlFor="level">Nível do Pokémon</label>
-              <input
-                type="number"
-                id="level"
-                value={level}
-                onChange={(e) => setLevel(e.target.value)}
-                required
-              />
+                <label htmlFor="pokedexNumber">Nome ou Número do Pokémon</label>
+                <div className="search-section">
+                <input
+                    type="text"
+                    id="pokedexNumber"
+                    value={pokedexNumber}
+                    onChange={(e) => setPokedexNumber(e.target.value)}
+                    placeholder="Ex: 25 ou Pikachu"
+                />
+                <button type="button" onClick={handleFetchPokemon} disabled={isFetching}>
+                    {isFetching ? 'Buscando...' : 'Buscar'}
+                </button>
+                </div>
             </div>
-          )}
+            
+            {fetchError && <p className="error-message">{fetchError}</p>}
+            
+            {pokemonPreview && (
+                <div className="preview-section">
+                <img src={pokemonPreview.imageUrl} alt={pokemonPreview.name} className="preview-image" />
+                <h2 className="preview-name">{pokemonPreview.name}</h2>
+                <p className="preview-type">{pokemonPreview.type}</p>
+                </div>
+            )}
 
-          <button type="submit" disabled={!pokemonPreview || !level}>
-            Adicionar à Equipe
-          </button>
-        </form>
+            {pokemonPreview && (
+                <div className="input-group">
+                <label htmlFor="level">Nível do Pokémon</label>
+                <input
+                    type="number"
+                    id="level"
+                    value={level}
+                    onChange={(e) => setLevel(e.target.value)}
+                    required
+                />
+                </div>
+            )}
+
+            <button type="submit" disabled={!pokemonPreview || !level}>
+                Adicionar à Equipe
+            </button>
+            </form>
+        </div>
       </div>
     </>
   );
