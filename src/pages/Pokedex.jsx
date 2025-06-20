@@ -4,6 +4,9 @@ import Navbar from '../components/Navbar';
 import PokemonCard from '../components/PokemonCard';
 import './Pokedex.css';
 
+// Define a URL base da API a partir da variável de ambiente
+const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
 const Pokedex = ({ user, onLogout }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResult, setSearchResult] = useState(null);
@@ -11,9 +14,11 @@ const Pokedex = ({ user, onLogout }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Carrega a Pokédex do usuário logado ao iniciar
   useEffect(() => {
     if (user) {
-      axios.get(`http://localhost:3001/pokedex/${user.id}`)
+      // Usa a variável apiUrl
+      axios.get(`${apiUrl}/pokedex/${user.id}`)
         .then(response => {
           setPokedexList(response.data);
         })
@@ -24,6 +29,7 @@ const Pokedex = ({ user, onLogout }) => {
     }
   }, [user]);
 
+  // A busca na PokeAPI externa não muda
   const handleSearch = async () => {
     if (!searchTerm) return;
     setIsLoading(true);
@@ -46,6 +52,7 @@ const Pokedex = ({ user, onLogout }) => {
     }
   };
 
+  // Salva o Pokémon no nosso backend
   const handleAddToList = async () => {
     if (searchResult) {
       if (pokedexList.some(p => p.id === searchResult.id)) {
@@ -54,7 +61,8 @@ const Pokedex = ({ user, onLogout }) => {
       }
       const pokemonData = { ...searchResult, user_id: user.id };
       try {
-        await axios.post('http://localhost:3001/pokedex', pokemonData);
+        // Usa a variável apiUrl
+        await axios.post(`${apiUrl}/pokedex`, pokemonData);
         setPokedexList(currentList => {
           const newList = [...currentList, searchResult];
           newList.sort((a, b) => a.id - b.id);
