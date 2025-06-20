@@ -9,11 +9,14 @@ const Login = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  // Define a URL base da API a partir da variável de ambiente Vite
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3001/login', {
+      const response = await axios.post(`${API_URL}/login`, {
         username,
         password,
       });

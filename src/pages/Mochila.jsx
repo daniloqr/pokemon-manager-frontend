@@ -10,6 +10,8 @@ const Mochila = ({ user, onLogout }) => {
   const [editingItemId, setEditingItemId] = useState(null);
   const [editQuantity, setEditQuantity] = useState(0);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (user) {
       axios.get(`http://localhost:3001/mochila/${user.id}`)
