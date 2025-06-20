@@ -7,12 +7,15 @@ const Auditoria = ({ user, onLogout }) => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Define a URL base da API a partir da variável de ambiente Vite
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    axios.get('http://localhost:3001/auditoria')
+    axios.get(`${API_URL}/auditoria`)
       .then(response => { setLogs(response.data); })
       .catch(error => console.error("Erro ao buscar logs de auditoria:", error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [API_URL]);
 
   const formatTimestamp = (ts) => {
     return new Date(ts).toLocaleString('pt-BR');

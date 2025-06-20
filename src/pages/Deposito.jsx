@@ -11,31 +11,34 @@ const Deposito = ({ user, onLogout }) => {
   const [depositedPokemons, setDepositedPokemons] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Define a URL base da API a partir da variável de ambiente Vite
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (!user) return;
     setLoading(true);
     if (user.tipo_usuario === 'M') {
-      axios.get(`http://localhost:3001/users/${user.id}`)
+      axios.get(`${API_URL}/users/${user.id}`)
         .then(response => {
           setAllTrainers(response.data);
           setLoading(false);
         })
         .catch(error => { setLoading(false); });
     } else if (user.tipo_usuario === 'T') {
-      axios.get(`http://localhost:3001/deposito/${user.id}`)
+      axios.get(`${API_URL}/deposito/${user.id}`)
         .then(response => {
           setDepositedPokemons(response.data);
           setLoading(false);
         })
         .catch(error => { setLoading(false); });
     }
-  }, [user]);
+  }, [user, API_URL]);
 
   const handleTrainerSelect = (trainer) => {
     setSelectedTrainer(trainer);
     setLoading(true);
     setDepositedPokemons([]);
-    axios.get(`http://localhost:3001/deposito/${trainer.id}`)
+    axios.get(`${API_URL}/deposito/${trainer.id}`)
       .then(response => { setDepositedPokemons(response.data); })
       .catch(error => { alert('Não foi possível carregar o depósito deste treinador.'); })
       .finally(() => { setLoading(false); });
@@ -43,7 +46,7 @@ const Deposito = ({ user, onLogout }) => {
 
   const handleWithdrawPokemon = async (pokemonId, pokemonName) => {
     try {
-      const response = await axios.put(`http://localhost:3001/pokemon/${pokemonId}/withdraw`);
+      const response = await axios.put(`${API_URL}/pokemon/${pokemonId}/withdraw`);
       setDepositedPokemons(currentPokemons => currentPokemons.filter(p => p.id !== pokemonId));
       alert(response.data.message);
     } catch (error) {

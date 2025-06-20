@@ -21,20 +21,23 @@ const FichaTreinador = ({ user, onLogout }) => {
   const [dados, setDados] = useState(dadosIniciais);
   const [loading, setLoading] = useState(true);
 
+  // Use a variável de ambiente VITE_API_URL
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (!userId) return;
     setLoading(true);
-    axios.get(`http://localhost:3001/ficha/${userId}`)
+    axios.get(`${API_URL}/ficha/${userId}`)
       .then(response => { setDados(response.data); })
       .catch(error => {
         if (error.response && error.response.status === 404) {
-          axios.get(`http://localhost:3001/user/${userId}`).then(res => {
+          axios.get(`${API_URL}/user/${userId}`).then(res => {
             setDados(prev => ({ ...prev, nome: res.data.username }));
           });
         } else { console.error('Erro ao buscar a ficha!', error); }
       })
       .finally(() => setLoading(false));
-  }, [userId]);
+  }, [userId, API_URL]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,14 +67,9 @@ const FichaTreinador = ({ user, onLogout }) => {
   // 3. A função de salvar agora também redireciona
   const handleSave = async () => {
     try {
-      await axios.put(`http://localhost:3001/ficha/${userId}`, dados);
-      
-      // A mensagem de sucesso continua aqui
+      await axios.put(`${API_URL}/ficha/${userId}`, dados);
       alert('Ficha salva com sucesso!');
-      
-      // Ação de redirecionamento para a página do treinador
       navigate(`/trainer/${userId}`);
-
     } catch (error) {
       console.error('Erro ao salvar a ficha!', error);
       alert('Houve um erro ao salvar a ficha.');

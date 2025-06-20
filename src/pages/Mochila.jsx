@@ -14,20 +14,20 @@ const Mochila = ({ user, onLogout }) => {
 
   useEffect(() => {
     if (user) {
-      axios.get(`http://localhost:3001/mochila/${user.id}`)
+      axios.get(`${API_URL}/mochila/${user.id}`)
         .then(response => {
           const sortedItens = response.data.sort((a, b) => a.item_nome.localeCompare(b.item_nome));
           setItens(sortedItens);
         })
         .catch(error => console.error("Erro ao buscar itens da mochila:", error));
     }
-  }, [user]);
+  }, [user, API_URL]);
 
   const handleAddItem = async (e) => {
     e.preventDefault();
     if (!newItem.trim() || quantity < 1) return;
     try {
-      const response = await axios.post('http://localhost:3001/mochila/item', {
+      const response = await axios.post(`${API_URL}/mochila/item`, {
         user_id: user.id,
         item_nome: newItem.trim(),
         quantidade: parseInt(quantity, 10)
@@ -54,7 +54,7 @@ const Mochila = ({ user, onLogout }) => {
       return;
     }
     try {
-      await axios.delete(`http://localhost:3001/mochila/item/${itemId}`);
+      await axios.delete(`${API_URL}/mochila/item/${itemId}`);
       setItens(itens.filter(item => item.id !== itemId));
     } catch (error) {
       alert("Falha ao remover o item.");
@@ -72,7 +72,7 @@ const Mochila = ({ user, onLogout }) => {
 
   const handleUpdateQuantity = async (itemId) => {
     try {
-      const response = await axios.put(`http://localhost:3001/mochila/item/${itemId}`, {
+      const response = await axios.put(`${API_URL}/mochila/item/${itemId}`, {
         quantidade: parseInt(editQuantity, 10)
       });
       if (parseInt(editQuantity, 10) <= 0) {

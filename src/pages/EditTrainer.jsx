@@ -14,6 +14,9 @@ const EditTrainer = ({ user, onLogout }) => {
   const [currentImageUrl, setCurrentImageUrl] = useState('');
   const [loading, setLoading] = useState(true);
 
+  // Define a URL base da API a partir da variável de ambiente Vite
+  const API_URL = import.meta.env.VITE_API_URL;
+
   // --- VERIFICAÇÃO DE SEGURANÇA ---
   useEffect(() => {
     // Se o usuário não for Master E o ID do usuário logado for diferente do ID na URL
@@ -27,7 +30,7 @@ const EditTrainer = ({ user, onLogout }) => {
   useEffect(() => {
     // Garante que a busca só ocorra se o usuário tiver permissão
     if (user && (user.tipo_usuario === 'M' || user.id === parseInt(id))) {
-      axios.get(`http://localhost:3001/user/${id}`)
+      axios.get(`${API_URL}/user/${id}`)
         .then(response => {
           setUsername(response.data.username);
           setCurrentImageUrl(response.data.image_url);
@@ -39,7 +42,7 @@ const EditTrainer = ({ user, onLogout }) => {
           setLoading(false);
         });
     }
-  }, [id, user]);
+  }, [id, user, API_URL]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,7 +57,7 @@ const EditTrainer = ({ user, onLogout }) => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:3001/user/${id}`, formData);
+      const response = await axios.put(`${API_URL}/user/${id}`, formData);
       alert(response.data.message);
       navigate('/');
     } catch (error) {
