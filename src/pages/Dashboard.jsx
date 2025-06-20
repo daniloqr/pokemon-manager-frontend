@@ -8,19 +8,22 @@ const Dashboard = ({ user, onLogout }) => {
   const [trainers, setTrainers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Define a URL base da API a partir da variável de ambiente Vite
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (!user) return;
     setLoading(true);
-    axios.get(`http://localhost:3001/users/${user.id}`)
+    axios.get(`${API_URL}/users/${user.id}`)
       .then(response => { setTrainers(response.data); })
       .catch(error => { console.error("Erro ao buscar treinadores:", error); })
       .finally(() => { setLoading(false); });
-  }, [user]);
+  }, [user, API_URL]);
 
   const handleDeleteTrainer = async (trainerId, trainerName) => {
     if (!window.confirm(`Tem certeza que deseja excluir o treinador "${trainerName}" e todos os seus dados?`)) return;
     try {
-      await axios.delete(`http://localhost:3001/user/${trainerId}`);
+      await axios.delete(`${API_URL}/user/${trainerId}`);
       setTrainers(currentTrainers => currentTrainers.filter(t => t.id !== trainerId));
       alert(`Treinador '${trainerName}' excluído com sucesso.`);
     } catch (error) { alert('Falha ao excluir o treinador.'); }
