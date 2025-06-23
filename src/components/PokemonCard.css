@@ -190,3 +190,25 @@
 .pokemon-card.is-small .pokemon-details {
   font-size: 0.8rem; /* Diminui a fonte dos detalhes */
 }
+
+
+/* Cores da Barra de HP (existente) */
+.hp-high {
+  background-color: #4caf50; /* Verde */
+}
+.hp-medium {
+  background-color: #ffc107; /* Amarelo */
+}
+.hp-low {
+  background-color: #f44336; /* Vermelho */
+}
+
+/* NOVAS Cores para a Barra de Especial */
+.special-bar {
+  background-color: #2196f3; /* Azul */
+}
+
+/* NOVAS Cores para a Barra de Vigor */
+.vigor-bar {
+  background-color: #ff9800; /* Laranja */
+}

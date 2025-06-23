@@ -23,7 +23,11 @@ const PokemonCard = ({ pokemon, currentUser, trainerId, onDeposit, onUpdate, onW
 
   const canManage = currentUser && trainerId && (currentUser.tipo_usuario === 'M' || currentUser.id === trainerId);
 
+  // Lógica para as barras de progresso
   const hpPercentage = (pokemon.max_hp ?? 10) > 0 ? ((pokemon.current_hp ?? 0) / (pokemon.max_hp ?? 10)) * 100 : 0;
+  const especialPercentage = (pokemon.especial_total ?? 10) > 0 ? ((pokemon.especial ?? 0) / (pokemon.especial_total ?? 10)) * 100 : 0;
+  const vigorPercentage = (pokemon.vigor_total ?? 10) > 0 ? ((pokemon.vigor ?? 0) / (pokemon.vigor_total ?? 10)) * 100 : 0;
+
   const getHpBarColorClass = (percentage) => {
     if (percentage > 50) return 'hp-high';
     if (percentage > 20) return 'hp-medium';
@@ -79,6 +83,7 @@ const PokemonCard = ({ pokemon, currentUser, trainerId, onDeposit, onUpdate, onW
         {!isPokedexView && (
           isEditing ? (
             <div className="edit-stats-form">
+              {/* Formulário de edição continua o mesmo */}
               <div className="edit-field"><label>Level</label><input type="number" name="level" value={editData.level} onChange={handleInputChange} /></div>
               <div className="edit-field"><label>XP</label><input type="number" name="xp" value={editData.xp} onChange={handleInputChange} /></div>
               <div className="edit-field"><label>HP Atual</label><input type="number" name="current_hp" value={editData.current_hp} onChange={handleInputChange} /></div>
@@ -92,6 +97,8 @@ const PokemonCard = ({ pokemon, currentUser, trainerId, onDeposit, onUpdate, onW
             <div>
               <p className="pokemon-details">Nível: {pokemon.level ?? 1}</p>
               <p className="pokemon-details">XP: {pokemon.xp ?? 0}</p>
+
+              {/* Barra de HP (existente) */}
               <div className="hp-bar-container">
                 <div className="hp-bar-label">HP</div>
                 <div className="hp-bar-background">
@@ -104,12 +111,35 @@ const PokemonCard = ({ pokemon, currentUser, trainerId, onDeposit, onUpdate, onW
                   </span>
                 </div>
               </div>
-              <p className="pokemon-details">
-                Especial: {pokemon.especial ?? 10} / {pokemon.especial_total ?? 10}
-              </p>
-              <p className="pokemon-details">
-                Vigor: {pokemon.vigor ?? 10} / {pokemon.vigor_total ?? 10}
-              </p>
+
+              {/* NOVA Barra de Especial */}
+              <div className="hp-bar-container">
+                <div className="hp-bar-label">Especial</div>
+                <div className="hp-bar-background">
+                  <div 
+                    className="hp-bar-progress special-bar"
+                    style={{ width: `${especialPercentage}%` }}
+                  ></div>
+                  <span className="hp-bar-text">
+                    {pokemon.especial ?? 10} / {pokemon.especial_total ?? 10} ({Math.round(especialPercentage)}%)
+                  </span>
+                </div>
+              </div>
+
+              {/* NOVA Barra de Vigor */}
+              <div className="hp-bar-container">
+                <div className="hp-bar-label">Vigor</div>
+                <div className="hp-bar-background">
+                  <div 
+                    className="hp-bar-progress vigor-bar"
+                    style={{ width: `${vigorPercentage}%` }}
+                  ></div>
+                  <span className="hp-bar-text">
+                    {pokemon.vigor ?? 10} / {pokemon.vigor_total ?? 10} ({Math.round(vigorPercentage)}%)
+                  </span>
+                </div>
+              </div>
+
               <p className="pokemon-details">Tipo: {pokemon.type}</p>
             </div>
           )
@@ -118,6 +148,7 @@ const PokemonCard = ({ pokemon, currentUser, trainerId, onDeposit, onUpdate, onW
 
       {canManage && (
         <div className="pokemon-card-actions">
+          
           {isEditing ? (
             <>
               <button className="pokemon-cancel-button" onClick={handleCancelClick}>Cancelar</button>
