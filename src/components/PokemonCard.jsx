@@ -12,7 +12,6 @@ const PokemonCard = ({
   onDeposit,
   onUpdate,
   onWithdraw,
-  onDelete,    // Pode remover, se quiser centralizar tudo aqui
   isPokedexView = false
 }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -93,7 +92,7 @@ const handleDelete = (e) => {
         {!isPokedexView && (
           isEditing ? (
             <div className="edit-stats-form">
-              {/* ... campos de edição ... */}
+            
             </div>
           ) : (
             <div>
@@ -141,7 +140,7 @@ const handleDelete = (e) => {
                   className="pokemon-delete-button"
                   onClick={handleDelete}
                   disabled={isDeleting}
-                >Excluir</button>
+                >Excluir teste</button>
               )}
             </>
           )}
