@@ -1,34 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Slider from '@mui/material/Slider';
+import StatusBar from '../components/StatusBar'; // ajuste o caminho se necessário
 import './PokemonCard.css';
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
-
-// Componente de barra de status com MUI
-function StatusBar({ value, max, color = 'limegreen', label = 'HP' }) {
-  return (
-    <div style={{ margin: '8px 0' }}>
-      <span style={{ fontWeight: 'bold', marginRight: 8 }}>{label}</span>
-      <Slider
-        value={value}
-        min={0}
-        max={max}
-        disabled
-        sx={{
-          color: color,
-          height: 16,
-          borderRadius: '8px',
-          '& .MuiSlider-thumb': { display: 'none' },
-          '& .MuiSlider-rail': { backgroundColor: '#22293b' }
-        }}
-      />
-      <span style={{
-        position: 'relative', left: 10, fontWeight: 'bold', color: '#fff', fontSize: 14
-      }}>{value} / {max}</span>
-    </div>
-  );
-}
 
 const PokemonCard = ({
   pokemon,
@@ -196,12 +171,10 @@ const PokemonCard = ({
             </div>
           ) : (
             <div>
-              {/* HP */}
-              <StatusBar value={pokemon.current_hp ?? 0} max={pokemon.max_hp ?? 10} color="limegreen" label="HP" />
-              {/* Especial */}
-              <StatusBar value={pokemon.especial ?? 10} max={pokemon.especial_total ?? 10} color="#2196f3" label="Especial" />
-              {/* Vigor */}
-              <StatusBar value={pokemon.vigor ?? 10} max={pokemon.vigor_total ?? 10} color="#ffa500" label="Vigor" />
+              {/* Barras de status estilizadas */}
+              <StatusBar value={pokemon.current_hp ?? 0} max={pokemon.max_hp ?? 10} color="#ff4a4a" label="HP" />
+              <StatusBar value={pokemon.especial ?? 10} max={pokemon.especial_total ?? 10} color="#00ff99" label="Especial" />
+              <StatusBar value={pokemon.vigor ?? 10} max={pokemon.vigor_total ?? 10} color="#2196f3" label="Vigor" />
               <p className="pokemon-details">Nível: {pokemon.level ?? 1}</p>
               <p className="pokemon-details">XP: {pokemon.xp ?? 0}</p>
             </div>
@@ -236,4 +209,5 @@ const PokemonCard = ({
     </div>
   );
 };
+
 export default PokemonCard;
