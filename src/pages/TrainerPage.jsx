@@ -56,6 +56,7 @@ const TrainerPage = ({ user, onLogout }) => {
   };
 
   const handleOpenDeleteModal = (pokemon) => {
+    console.log("Abrindo modal de exclusão:", pokemon);
     setDeletingPokemon(pokemon);
   };
   
@@ -115,7 +116,7 @@ const TrainerPage = ({ user, onLogout }) => {
                   trainerId={trainerInfo.id}
                   onDeposit={handleDepositPokemon}
                   onUpdate={handlePokemonUpdate}
-                  onDelete={() => handleOpenDeleteModal(pokemon)}
+                  onDelete={handleOpenDeleteModal} 
                   onEdit={() => handleOpenEditModal(pokemon)}
                 />
               ))}

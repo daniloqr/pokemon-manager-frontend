@@ -72,7 +72,11 @@ const PokemonCard = ({ pokemon, currentUser, trainerId, onDeposit, onUpdate, onW
   // --- Funções que chamam as props do componente pai ---
   const handleDeposit = (e) => { e.stopPropagation(); if (onDeposit) onDeposit(pokemon.id, pokemon.name); };
   const handleWithdraw = (e) => { e.stopPropagation(); if (onWithdraw) onWithdraw(pokemon.id, pokemon.name); };
-  const handleDelete = (e) => { e.stopPropagation(); if (onDelete) onDelete(pokemon); }; // Apenas passa o pokemon para o pai
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    console.log("Clicou em EXCLUIR, pokemon:", pokemon);
+    if (onDelete) onDelete(pokemon);
+  };
   
   return (
     <div className="pokemon-card">
