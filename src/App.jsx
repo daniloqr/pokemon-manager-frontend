@@ -30,6 +30,8 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('user');
     setUser(null);
+    // Opcional: Redirecionamento forçado para login após logout
+    window.location.href = '/login';
   };
 
   return (
@@ -47,7 +49,7 @@ function App() {
           <Route path="/pokedex" element={ user?.tipo_usuario === 'T' ? <Pokedex user={user} onLogout={handleLogout} /> : <Navigate to="/" /> } />
           <Route path="/mochila" element={ user?.tipo_usuario === 'T' ? <Mochila user={user} onLogout={handleLogout} /> : <Navigate to="/" /> } />
           <Route path="/auditoria" element={ user?.tipo_usuario === 'M' ? <Auditoria user={user} onLogout={handleLogout} /> : <Navigate to="/" /> } />
-          
+          {/* Redirecionamento padrão */}
           <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />
         </Routes>
       </div>
