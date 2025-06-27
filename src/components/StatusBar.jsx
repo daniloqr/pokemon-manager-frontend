@@ -38,7 +38,8 @@ export default function StatusBar({
   color = '#00FF99',
   label = 'HP',
   disabled = false,
-  onChange
+  onChange,
+  onChangeCommitted
 }) {
   return (
     <div style={{ margin: '16px 0', width: '100%' }}>
@@ -49,8 +50,9 @@ export default function StatusBar({
         max={max}
         color="primary"
         barcolor={color}
-        disabled={false}
+        disabled={disabled}
         onChange={onChange}
+        onChangeCommitted={onChangeCommitted}
       />
       <span style={{ marginLeft: 12, color: '#fff', fontWeight: 'bold' }}>
         {value} / {max}

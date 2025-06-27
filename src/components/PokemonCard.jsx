@@ -58,6 +58,7 @@ const PokemonCard = ({
       const res = await axios.put(`${apiUrl}/pokemon-stats/${pokemon.id}`, editData);
       if (onUpdate) onUpdate(res.data.pokemon);
       setIsEditing(false);
+      alert('Status salvo com sucesso!');
     } catch (error) {
       alert('Erro ao salvar os stats do Pokémon.');
     }
@@ -85,6 +86,20 @@ const PokemonCard = ({
     }
   };
 
+  // Funções de salvamento automático ao soltar a barra (onChangeCommitted)
+  const autoSave = async (key, value, successMsg, errorMsg) => {
+    setEditData(prev => ({ ...prev, [key]: value }));
+    try {
+      await axios.put(`${apiUrl}/pokemon-stats/${pokemon.id}`, {
+        ...editData,
+        [key]: value,
+      });
+      alert(successMsg);
+    } catch (error) {
+      alert(errorMsg);
+    }
+  };
+
   if (pokemon.deleted) return null; // Esconde imediatamente se foi deletado
 
   return (
@@ -102,7 +117,12 @@ const PokemonCard = ({
                 color="#ff4a4a"
                 label="HP"
                 disabled={false}
-                onChange={(e, newValue) => setEditData(prev => ({ ...prev, current_hp: newValue }))}
+                onChange={(e, newValue) =>
+                  setEditData(prev => ({ ...prev, current_hp: newValue }))
+                }
+                onChangeCommitted={(e, newValue) =>
+                  autoSave('current_hp', newValue, 'HP salvo com sucesso!', 'Erro ao salvar HP!')
+                }
               />
               <StatusBar
                 value={editData.especial}
@@ -110,7 +130,12 @@ const PokemonCard = ({
                 color="#00ff99"
                 label="Especial"
                 disabled={false}
-                onChange={(e, newValue) => setEditData(prev => ({ ...prev, especial: newValue }))}
+                onChange={(e, newValue) =>
+                  setEditData(prev => ({ ...prev, especial: newValue }))
+                }
+                onChangeCommitted={(e, newValue) =>
+                  autoSave('especial', newValue, 'Especial salvo com sucesso!', 'Erro ao salvar Especial!')
+                }
               />
               <StatusBar
                 value={editData.vigor}
@@ -118,7 +143,12 @@ const PokemonCard = ({
                 color="#2196f3"
                 label="Vigor"
                 disabled={false}
-                onChange={(e, newValue) => setEditData(prev => ({ ...prev, vigor: newValue }))}
+                onChange={(e, newValue) =>
+                  setEditData(prev => ({ ...prev, vigor: newValue }))
+                }
+                onChangeCommitted={(e, newValue) =>
+                  autoSave('vigor', newValue, 'Vigor salvo com sucesso!', 'Erro ao salvar Vigor!')
+                }
               />
               <div className="edit-field">
                 <label>HP Máx</label>
@@ -168,36 +198,9 @@ const PokemonCard = ({
             </div>
           ) : (
             <div>
-                <StatusBar
-                value={editData.current_hp}
-                max={editData.max_hp}
-                color="#ff4a4a"
-                label="HP"
-                disabled={false}
-                onChange={(event, newValue) =>
-                  setEditData(prev => ({ ...prev, current_hp: newValue }))
-                }
-              />
-              <StatusBar
-                value={editData.especial}
-                max={editData.especial_total}
-                color="#00ff99"
-                label="Especial"
-                disabled={false}
-                onChange={(event, newValue) =>
-                  setEditData(prev => ({ ...prev, especial: newValue }))
-                }
-              />
-              <StatusBar
-                value={editData.vigor}
-                max={editData.vigor_total}
-                color="#2196f3"
-                label="Vigor"
-                disabled={false}
-                onChange={(event, newValue) =>
-                  setEditData(prev => ({ ...prev, vigor: newValue }))
-                }
-              />
+              <StatusBar value={pokemon.current_hp ?? 0} max={pokemon.max_hp ?? 10} color="#ff4a4a" label="HP" disabled={true} />
+              <StatusBar value={pokemon.especial ?? 10} max={pokemon.especial_total ?? 10} color="#00ff99" label="Especial" disabled={true} />
+              <StatusBar value={pokemon.vigor ?? 10} max={pokemon.vigor_total ?? 10} color="#2196f3" label="Vigor" disabled={true} />
               <p className="pokemon-details">Nível: {pokemon.level ?? 1}</p>
               <p className="pokemon-details">XP: {pokemon.xp ?? 0}</p>
             </div>
