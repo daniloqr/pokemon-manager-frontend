@@ -11,7 +11,6 @@ const PokemonCard = ({
   onDeposit,
   onUpdate,
   onWithdraw,
-  onDelete, // <-- RECEBE a função do pai!
   isPokedexView = false
 }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -76,10 +75,23 @@ const PokemonCard = ({
   const handleDeposit = (e) => { e.stopPropagation(); if (onDeposit) onDeposit(pokemon.id, pokemon.name); };
   const handleWithdraw = (e) => { e.stopPropagation(); if (onWithdraw) onWithdraw(pokemon.id, pokemon.name); };
 
-  // AQUI ESTÁ O FLUXO CORRETO PARA ABRIR O MODAL DE EXCLUSÃO
-  const handleDelete = (e) => {
+  // Exclusão simples via window.confirm
+  const handleDelete = async (e) => {
     e.stopPropagation();
-    if (onDelete) onDelete(pokemon);
+    const confirmed = window.confirm(`Tem certeza que deseja excluir o Pokémon "${pokemon.name}"?`);
+    if (!confirmed) return;
+    try {
+      setIsDeleting(true);
+      await axios.delete(`${apiUrl}/pokemon/${pokemon.id}`);
+      if (onUpdate) {
+        onUpdate({ ...pokemon, deleted: true });
+      }
+      alert(`Pokémon "${pokemon.name}" excluído com sucesso!`);
+    } catch (err) {
+      alert('Erro ao excluir o Pokémon.');
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (pokemon.deleted) return null; // Esconde imediatamente se foi deletado
@@ -136,7 +148,7 @@ const PokemonCard = ({
               <button className="pokemon-edit-button" onClick={handleEditClick}>Editar</button>
               {onDeposit && <button className="pokemon-deposit-button" onClick={handleDeposit}>Depositar</button>}
               {onWithdraw && <button className="pokemon-withdraw-button" onClick={handleWithdraw}>Retirar</button>}
-              {currentUser?.tipo_usuario === 'M' && onDelete && (
+              {currentUser?.tipo_usuario === 'M' && (
                 <button
                   className="pokemon-delete-button"
                   onClick={handleDelete}

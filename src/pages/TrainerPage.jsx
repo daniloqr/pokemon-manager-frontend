@@ -4,7 +4,6 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import PokemonCard from '../components/PokemonCard';
 import Modal from '../components/Modal';
-import DeletePokemonModal from '../components/DeletePokemonModal';
 import './TrainerPage.css';
 
 const TrainerPage = ({ user, onLogout }) => {
@@ -14,7 +13,6 @@ const TrainerPage = ({ user, onLogout }) => {
   const [loading, setLoading] = useState(true);
   const [editingPokemon, setEditingPokemon] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deletingPokemon, setDeletingPokemon] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL;
   
@@ -49,30 +47,14 @@ const TrainerPage = ({ user, onLogout }) => {
     }
   };
 
+  // Aqui a função de update já remove da lista se for deletado:
   const handlePokemonUpdate = (updatedPokemon) => {
-    setPokemonTeam(currentTeam =>
-      currentTeam.map(p => (p.id === updatedPokemon.id ? updatedPokemon : p))
-    );
-  };
-
-  // CORRETO: recebe o pokémon e abre o modal
-  const handleOpenDeleteModal = (pokemon) => {
-    setDeletingPokemon(pokemon);
-  };
-  
-  const handleCloseDeleteModal = () => {
-    setDeletingPokemon(null);
-  };
-
-  const handleConfirmDelete = async (reason) => {
-    if (!deletingPokemon) return;
-    try {
-      await axios.delete(`${API_URL}/pokemon/${deletingPokemon.id}`);
-      setPokemonTeam(currentTeam => currentTeam.filter(p => p.id !== deletingPokemon.id));
-      alert(`${deletingPokemon.name} foi excluído com sucesso!`);
-      handleCloseDeleteModal();
-    } catch (error) {
-      alert('Erro ao excluir o Pokémon.');
+    if (updatedPokemon.deleted) {
+      setPokemonTeam(currentTeam => currentTeam.filter(p => p.id !== updatedPokemon.id));
+    } else {
+      setPokemonTeam(currentTeam =>
+        currentTeam.map(p => (p.id === updatedPokemon.id ? updatedPokemon : p))
+      );
     }
   };
 
@@ -115,7 +97,6 @@ const TrainerPage = ({ user, onLogout }) => {
                   trainerId={trainerInfo.id}
                   onDeposit={handleDepositPokemon}
                   onUpdate={handlePokemonUpdate}
-                  onDelete={handleOpenDeleteModal}   // <-- Prop correta!
                   onEdit={() => handleOpenEditModal(pokemon)}
                 />
               ))}
@@ -138,16 +119,6 @@ const TrainerPage = ({ user, onLogout }) => {
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {editingPokemon && (
           <PokemonSheet pokemon={editingPokemon} onClose={handleCloseModal} />
-        )}
-      </Modal>
-
-      <Modal isOpen={!!deletingPokemon} onClose={handleCloseDeleteModal}>
-        {deletingPokemon && (
-          <DeletePokemonModal
-            pokemonName={deletingPokemon.name}
-            onClose={handleCloseDeleteModal}
-            onConfirm={handleConfirmDelete}
-          />
         )}
       </Modal>
     </>
