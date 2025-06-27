@@ -95,7 +95,60 @@ const PokemonCard = ({
         <p className="pokemon-details">Tipo: {pokemon.type}</p>
         {!isPokedexView && (
           isEditing ? (
-            <div className="edit-stats-form">
+            <div>
+              {/* Barras interativas */}
+              <StatusBar
+                value={editData.current_hp}
+                max={editData.max_hp}
+                color="#ff4a4a"
+                label="HP"
+                disabled={false}
+                onChange={(e, newValue) => setEditData(prev => ({ ...prev, current_hp: newValue }))}
+              />
+              <StatusBar
+                value={editData.especial}
+                max={editData.especial_total}
+                color="#00ff99"
+                label="Especial"
+                disabled={false}
+                onChange={(e, newValue) => setEditData(prev => ({ ...prev, especial: newValue }))}
+              />
+              <StatusBar
+                value={editData.vigor}
+                max={editData.vigor_total}
+                color="#2196f3"
+                label="Vigor"
+                disabled={false}
+                onChange={(e, newValue) => setEditData(prev => ({ ...prev, vigor: newValue }))}
+              />
+              {/* Inputs opcionais para os valores máximos */}
+              <div className="edit-field">
+                <label>HP Máx</label>
+                <input
+                  type="number"
+                  name="max_hp"
+                  value={editData.max_hp}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>Especial Total</label>
+                <input
+                  type="number"
+                  name="especial_total"
+                  value={editData.especial_total}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>Vigor Total</label>
+                <input
+                  type="number"
+                  name="vigor_total"
+                  value={editData.vigor_total}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div className="edit-field">
                 <label>Nível</label>
                 <input
@@ -114,67 +167,13 @@ const PokemonCard = ({
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="edit-field">
-                <label>HP Atual</label>
-                <input
-                  type="number"
-                  name="current_hp"
-                  value={editData.current_hp}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="edit-field">
-                <label>HP Máx</label>
-                <input
-                  type="number"
-                  name="max_hp"
-                  value={editData.max_hp}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="edit-field">
-                <label>Especial</label>
-                <input
-                  type="number"
-                  name="especial"
-                  value={editData.especial}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="edit-field">
-                <label>Especial Total</label>
-                <input
-                  type="number"
-                  name="especial_total"
-                  value={editData.especial_total}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="edit-field">
-                <label>Vigor</label>
-                <input
-                  type="number"
-                  name="vigor"
-                  value={editData.vigor}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="edit-field">
-                <label>Vigor Total</label>
-                <input
-                  type="number"
-                  name="vigor_total"
-                  value={editData.vigor_total}
-                  onChange={handleInputChange}
-                />
-              </div>
             </div>
           ) : (
             <div>
-              {/* Barras de status estilizadas */}
-              <StatusBar value={pokemon.current_hp ?? 0} max={pokemon.max_hp ?? 10} color="#ff4a4a" label="HP" />
-              <StatusBar value={pokemon.especial ?? 10} max={pokemon.especial_total ?? 10} color="#00ff99" label="Especial" />
-              <StatusBar value={pokemon.vigor ?? 10} max={pokemon.vigor_total ?? 10} color="#2196f3" label="Vigor" />
+              {/* Barras só leitura */}
+              <StatusBar value={pokemon.current_hp ?? 0} max={pokemon.max_hp ?? 10} color="#ff4a4a" label="HP" disabled={true} />
+              <StatusBar value={pokemon.especial ?? 10} max={pokemon.especial_total ?? 10} color="#00ff99" label="Especial" disabled={true} />
+              <StatusBar value={pokemon.vigor ?? 10} max={pokemon.vigor_total ?? 10} color="#2196f3" label="Vigor" disabled={true} />
               <p className="pokemon-details">Nível: {pokemon.level ?? 1}</p>
               <p className="pokemon-details">XP: {pokemon.xp ?? 0}</p>
             </div>
