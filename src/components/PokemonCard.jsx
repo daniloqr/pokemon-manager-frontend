@@ -168,9 +168,36 @@ const PokemonCard = ({
             </div>
           ) : (
             <div>
-              <StatusBar value={pokemon.current_hp ?? 0} max={pokemon.max_hp ?? 10} color="#ff4a4a" label="HP" disabled={true} />
-              <StatusBar value={pokemon.especial ?? 10} max={pokemon.especial_total ?? 10} color="#00ff99" label="Especial" disabled={true} />
-              <StatusBar value={pokemon.vigor ?? 10} max={pokemon.vigor_total ?? 10} color="#2196f3" label="Vigor" disabled={true} />
+                <StatusBar
+                value={editData.current_hp}
+                max={editData.max_hp}
+                color="#ff4a4a"
+                label="HP"
+                disabled={false}
+                onChange={(event, newValue) =>
+                  setEditData(prev => ({ ...prev, current_hp: newValue }))
+                }
+              />
+              <StatusBar
+                value={editData.especial}
+                max={editData.especial_total}
+                color="#00ff99"
+                label="Especial"
+                disabled={false}
+                onChange={(event, newValue) =>
+                  setEditData(prev => ({ ...prev, especial: newValue }))
+                }
+              />
+              <StatusBar
+                value={editData.vigor}
+                max={editData.vigor_total}
+                color="#2196f3"
+                label="Vigor"
+                disabled={false}
+                onChange={(event, newValue) =>
+                  setEditData(prev => ({ ...prev, vigor: newValue }))
+                }
+              />
               <p className="pokemon-details">Nível: {pokemon.level ?? 1}</p>
               <p className="pokemon-details">XP: {pokemon.xp ?? 0}</p>
             </div>
