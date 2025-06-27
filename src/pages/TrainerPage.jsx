@@ -4,7 +4,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import PokemonCard from '../components/PokemonCard';
 import Modal from '../components/Modal';
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import DeletePokemonModal from '../components/DeletePokemonModal';
 import './TrainerPage.css';
 
 const TrainerPage = ({ user, onLogout }) => {
@@ -14,6 +14,7 @@ const TrainerPage = ({ user, onLogout }) => {
   const [loading, setLoading] = useState(true);
   const [editingPokemon, setEditingPokemon] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deletingPokemon, setDeletingPokemon] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL;
   
@@ -48,14 +49,31 @@ const TrainerPage = ({ user, onLogout }) => {
     }
   };
 
-  // Remove da lista se foi deletado, atualiza se só editou
   const handlePokemonUpdate = (updatedPokemon) => {
-    if (updatedPokemon.deleted) {
-      setPokemonTeam(currentTeam => currentTeam.filter(p => p.id !== updatedPokemon.id));
-    } else {
-      setPokemonTeam(currentTeam =>
-        currentTeam.map(p => (p.id === updatedPokemon.id ? updatedPokemon : p))
-      );
+    setPokemonTeam(currentTeam =>
+      currentTeam.map(p => (p.id === updatedPokemon.id ? updatedPokemon : p))
+    );
+  };
+
+  const handleOpenDeleteModal = (pokemon) => {
+    console.log("Abrindo modal de exclusão:", pokemon);
+    setDeletingPokemon(pokemon);
+  };
+  
+  const handleCloseDeleteModal = () => {
+    setDeletingPokemon(null);
+  };
+
+  const handleConfirmDelete = async (reason) => {
+    if (!deletingPokemon) return;
+    console.log(`Excluindo ${deletingPokemon.name} pelo motivo: ${reason}`);
+    try {
+      await axios.delete(`${API_URL}/pokemon/${deletingPokemon.id}`);
+      setPokemonTeam(currentTeam => currentTeam.filter(p => p.id !== deletingPokemon.id));
+      alert(`${deletingPokemon.name} foi excluído com sucesso!`);
+      handleCloseDeleteModal();
+    } catch (error) {
+      alert('Erro ao excluir o Pokémon.');
     }
   };
 
@@ -67,16 +85,6 @@ const TrainerPage = ({ user, onLogout }) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingPokemon(null);
-  };
-
-  // Drag & Drop handler
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-    const reordered = Array.from(pokemonTeam);
-    const [removed] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, removed);
-    setPokemonTeam(reordered);
-    // Aqui você pode fazer um POST para o backend salvar a ordem, se quiser.
   };
 
   if (loading) return <p style={{ color: 'white', textAlign: 'center', marginTop: '100px' }}>Carregando...</p>;
@@ -99,45 +107,20 @@ const TrainerPage = ({ user, onLogout }) => {
         <main className="pokemon-section">
           <h2>Equipe de Pokémon</h2>
           {pokemonTeam.length > 0 ? (
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="pokemon-grid" direction="horizontal">
-                {(provided) => (
-                  <div
-                    className="pokemon-grid"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{ display: 'flex', gap: '16px', minHeight: 300 }}
-                  >
-                    {pokemonTeam.map((pokemon, index) => (
-                      <Draggable key={pokemon.id} draggableId={pokemon.id.toString()} index={index}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={{
-                              ...provided.draggableProps.style,
-                              minWidth: 250,
-                              maxWidth: 300,
-                            }}
-                          >
-                            <PokemonCard
-                              pokemon={pokemon}
-                              currentUser={user}
-                              trainerId={trainerInfo.id}
-                              onDeposit={handleDepositPokemon}
-                              onUpdate={handlePokemonUpdate}
-                              onEdit={() => handleOpenEditModal(pokemon)}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
+            <div className="pokemon-grid">
+              {pokemonTeam.map(pokemon => (
+                <PokemonCard
+                  key={pokemon.id}
+                  pokemon={pokemon}
+                  currentUser={user}
+                  trainerId={trainerInfo.id}
+                  onDeposit={handleDepositPokemon}
+                  onUpdate={handlePokemonUpdate}
+                  onDelete={handleOpenDeleteModal} 
+                  onEdit={() => handleOpenEditModal(pokemon)}
+                />
+              ))}
+            </div>
           ) : (
             <div className="pokemon-list-placeholder">
               <p>Nenhum Pokémon cadastrado na equipe.</p>
@@ -156,6 +139,16 @@ const TrainerPage = ({ user, onLogout }) => {
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {editingPokemon && (
           <PokemonSheet pokemon={editingPokemon} onClose={handleCloseModal} />
+        )}
+      </Modal>
+
+      <Modal isOpen={!!deletingPokemon} onClose={handleCloseDeleteModal}>
+        {deletingPokemon && (
+          <DeletePokemonModal
+            pokemonName={deletingPokemon.name}
+            onClose={handleCloseDeleteModal}
+            onConfirm={handleConfirmDelete}
+          />
         )}
       </Modal>
     </>
