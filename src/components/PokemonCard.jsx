@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import StatusBar from '../components/StatusBar'; // ajuste o caminho se necessário
+import { toast } from 'react-toastify';
 import './PokemonCard.css';
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
@@ -58,16 +59,15 @@ const PokemonCard = ({
       const res = await axios.put(`${apiUrl}/pokemon-stats/${pokemon.id}`, editData);
       if (onUpdate) onUpdate(res.data.pokemon);
       setIsEditing(false);
-      alert('Status salvo com sucesso!');
+      toast.success('Status salvo com sucesso!');
     } catch (error) {
-      alert('Erro ao salvar os stats do Pokémon.');
+      toast.error('Erro ao salvar os stats do Pokémon.');
     }
   };
 
   const handleDeposit = (e) => { e.stopPropagation(); if (onDeposit) onDeposit(pokemon.id, pokemon.name); };
   const handleWithdraw = (e) => { e.stopPropagation(); if (onWithdraw) onWithdraw(pokemon.id, pokemon.name); };
 
-  // Exclusão simples via window.confirm
   const handleDelete = async (e) => {
     e.stopPropagation();
     const confirmed = window.confirm(`Tem certeza que deseja excluir o Pokémon "${pokemon.name}"?`);
@@ -78,28 +78,35 @@ const PokemonCard = ({
       if (onUpdate) {
         onUpdate({ ...pokemon, deleted: true });
       }
-      alert(`Pokémon "${pokemon.name}" excluído com sucesso!`);
+      toast.success(`Pokémon "${pokemon.name}" excluído com sucesso!`);
     } catch (err) {
-      alert('Erro ao excluir o Pokémon.');
+      toast.error('Erro ao excluir o Pokémon.');
     } finally {
       setIsDeleting(false);
     }
   };
 
-  // Função para auto-salvar campo individual ao soltar a barra
-  const autoSave = async (key, value, successMsg, errorMsg) => {
+  // Função para auto-salvar campo individual ao soltar a barra (com toastify)
+  const autoSave = async (key, value) => {
     setEditData(prev => ({ ...prev, [key]: value }));
     try {
       await axios.put(`${apiUrl}/pokemon-stats/${pokemon.id}`, {
         [key]: value,
       });
-      alert(successMsg);
+      // Mensagem personalizada para cada campo
+      let label = '';
+      if (key === 'current_hp') label = 'HP Atual';
+      else if (key === 'especial') label = 'Especial';
+      else if (key === 'vigor') label = 'Vigor';
+      else label = key.charAt(0).toUpperCase() + key.slice(1);
+
+      toast.success(`${label} salvo com sucesso!`);
     } catch (error) {
-      alert(errorMsg);
+      toast.error(`Erro ao salvar ${key === 'current_hp' ? 'HP Atual' : key.charAt(0).toUpperCase() + key.slice(1)}!`);
     }
   };
 
-  if (pokemon.deleted) return null; // Esconde imediatamente se foi deletado
+  if (pokemon.deleted) return null;
 
   return (
     <div className="pokemon-card">
@@ -110,7 +117,6 @@ const PokemonCard = ({
         {!isPokedexView && (
           isEditing ? (
             <div>
-              {/* HP ATUAL */}
               <StatusBar
                 value={editData.current_hp}
                 max={editData.max_hp}
@@ -121,10 +127,9 @@ const PokemonCard = ({
                   setEditData(prev => ({ ...prev, current_hp: newValue }))
                 }
                 onChangeCommitted={(e, newValue) =>
-                  autoSave('current_hp', newValue, 'HP Atual salvo com sucesso!', 'Erro ao salvar HP Atual!')
+                  autoSave('current_hp', newValue)
                 }
               />
-              {/* ESPECIAL ATUAL */}
               <StatusBar
                 value={editData.especial}
                 max={editData.especial_total}
@@ -135,10 +140,9 @@ const PokemonCard = ({
                   setEditData(prev => ({ ...prev, especial: newValue }))
                 }
                 onChangeCommitted={(e, newValue) =>
-                  autoSave('especial', newValue, 'Especial salvo com sucesso!', 'Erro ao salvar Especial!')
+                  autoSave('especial', newValue)
                 }
               />
-              {/* VIGOR ATUAL */}
               <StatusBar
                 value={editData.vigor}
                 max={editData.vigor_total}
@@ -149,7 +153,7 @@ const PokemonCard = ({
                   setEditData(prev => ({ ...prev, vigor: newValue }))
                 }
                 onChangeCommitted={(e, newValue) =>
-                  autoSave('vigor', newValue, 'Vigor salvo com sucesso!', 'Erro ao salvar Vigor!')
+                  autoSave('vigor', newValue)
                 }
               />
               <div className="edit-field">
