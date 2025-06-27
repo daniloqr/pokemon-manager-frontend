@@ -56,7 +56,6 @@ const TrainerPage = ({ user, onLogout }) => {
   };
 
   const handleOpenDeleteModal = (pokemon) => {
-    console.log("Abrindo modal de exclusão:", pokemon);
     setDeletingPokemon(pokemon);
   };
   
@@ -66,7 +65,6 @@ const TrainerPage = ({ user, onLogout }) => {
 
   const handleConfirmDelete = async (reason) => {
     if (!deletingPokemon) return;
-    console.log(`Excluindo ${deletingPokemon.name} pelo motivo: ${reason}`);
     try {
       await axios.delete(`${API_URL}/pokemon/${deletingPokemon.id}`);
       setPokemonTeam(currentTeam => currentTeam.filter(p => p.id !== deletingPokemon.id));
@@ -116,7 +114,7 @@ const TrainerPage = ({ user, onLogout }) => {
                   trainerId={trainerInfo.id}
                   onDeposit={handleDepositPokemon}
                   onUpdate={handlePokemonUpdate}
-                  onDelete={handleOpenDeleteModal} 
+                  onDelete={handleOpenDeleteModal}   // <-- Corrigido aqui!
                   onEdit={() => handleOpenEditModal(pokemon)}
                 />
               ))}
