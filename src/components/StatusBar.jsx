@@ -44,7 +44,8 @@ export default function StatusBar({ value, max, color = '#00FF99', label = 'HP',
         max={max}
         color="primary"
         barcolor={color}
-        disabled={disabled}
+         disabled = {false}
+        onChange = {null} 
       />
       <span style={{ marginLeft: 12, color: '#fff', fontWeight: 'bold' }}>
         {value} / {max}
