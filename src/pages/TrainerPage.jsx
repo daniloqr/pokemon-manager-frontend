@@ -4,8 +4,49 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import PokemonCard from '../components/PokemonCard';
 import Modal from '../components/Modal';
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+// DND-KIT IMPORTS:
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  horizontalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
 import './TrainerPage.css';
+
+function SortablePokemon({ pokemon, ...props }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: pokemon.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    minWidth: 250,
+    maxWidth: 300,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <PokemonCard {...props} pokemon={pokemon} />
+    </div>
+  );
+}
 
 const TrainerPage = ({ user, onLogout }) => {
   const { id } = useParams();
@@ -69,14 +110,19 @@ const TrainerPage = ({ user, onLogout }) => {
     setEditingPokemon(null);
   };
 
-  // Drag & Drop handler
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-    const reordered = Array.from(pokemonTeam);
-    const [removed] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, removed);
-    setPokemonTeam(reordered);
-    // Aqui você pode fazer um POST para o backend salvar a ordem, se quiser.
+  // DnD-kit setup
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      const oldIndex = pokemonTeam.findIndex(p => p.id === active.id);
+      const newIndex = pokemonTeam.findIndex(p => p.id === over.id);
+      setPokemonTeam((pokemons) => arrayMove(pokemons, oldIndex, newIndex));
+      // Aqui, se quiser, envie para o backend a nova ordem
+    }
   };
 
   if (loading) return <p style={{ color: 'white', textAlign: 'center', marginTop: '100px' }}>Carregando...</p>;
@@ -99,45 +145,30 @@ const TrainerPage = ({ user, onLogout }) => {
         <main className="pokemon-section">
           <h2>Equipe de Pokémon</h2>
           {pokemonTeam.length > 0 ? (
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="pokemon-grid" direction="horizontal">
-                {(provided) => (
-                  <div
-                    className="pokemon-grid"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{ display: 'flex', gap: '16px', minHeight: 300 }}
-                  >
-                    {pokemonTeam.map((pokemon, index) => (
-                      <Draggable key={pokemon.id} draggableId={pokemon.id.toString()} index={index}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={{
-                              ...provided.draggableProps.style,
-                              minWidth: 250,
-                              maxWidth: 300,
-                            }}
-                          >
-                            <PokemonCard
-                              pokemon={pokemon}
-                              currentUser={user}
-                              trainerId={trainerInfo.id}
-                              onDeposit={handleDepositPokemon}
-                              onUpdate={handlePokemonUpdate}
-                              onEdit={() => handleOpenEditModal(pokemon)}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={pokemonTeam.map(p => p.id)}
+                strategy={horizontalListSortingStrategy}
+              >
+                <div className="pokemon-grid" style={{ display: 'flex', gap: '16px', minHeight: 300 }}>
+                  {pokemonTeam.map((pokemon) => (
+                    <SortablePokemon
+                      key={pokemon.id}
+                      pokemon={pokemon}
+                      currentUser={user}
+                      trainerId={trainerInfo.id}
+                      onDeposit={handleDepositPokemon}
+                      onUpdate={handlePokemonUpdate}
+                      onEdit={() => handleOpenEditModal(pokemon)}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           ) : (
             <div className="pokemon-list-placeholder">
               <p>Nenhum Pokémon cadastrado na equipe.</p>
