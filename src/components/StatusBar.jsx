@@ -1,5 +1,3 @@
-// src/components/StatusBar.jsx
-
 import React from 'react';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
@@ -34,7 +32,14 @@ const CustomStatusBar = styled(Slider)(({ barcolor = "#00FF99" }) => ({
   },
 }));
 
-export default function StatusBar({ value, max, color = '#00FF99', label = 'HP', disabled = true }) {
+export default function StatusBar({
+  value,
+  max,
+  color = '#00FF99',
+  label = 'HP',
+  disabled = false,
+  onChange
+}) {
   return (
     <div style={{ margin: '16px 0', width: '100%' }}>
       <span style={{ fontWeight: 'bold', color: '#fff', marginRight: 10 }}>{label}</span>
@@ -44,8 +49,8 @@ export default function StatusBar({ value, max, color = '#00FF99', label = 'HP',
         max={max}
         color="primary"
         barcolor={color}
-         disabled = {false}
-        onChange = {null} 
+        disabled={disabled}
+        onChange={onChange}
       />
       <span style={{ marginLeft: 12, color: '#fff', fontWeight: 'bold' }}>
         {value} / {max}
