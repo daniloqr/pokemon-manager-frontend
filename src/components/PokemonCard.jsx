@@ -1,8 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Slider from '@mui/material/Slider';
 import './PokemonCard.css';
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
+// Componente de barra de status com MUI
+function StatusBar({ value, max, color = 'limegreen', label = 'HP' }) {
+  return (
+    <div style={{ margin: '8px 0' }}>
+      <span style={{ fontWeight: 'bold', marginRight: 8 }}>{label}</span>
+      <Slider
+        value={value}
+        min={0}
+        max={max}
+        disabled
+        sx={{
+          color: color,
+          height: 16,
+          borderRadius: '8px',
+          '& .MuiSlider-thumb': { display: 'none' },
+          '& .MuiSlider-rail': { backgroundColor: '#22293b' }
+        }}
+      />
+      <span style={{
+        position: 'relative', left: 10, fontWeight: 'bold', color: '#fff', fontSize: 14
+      }}>{value} / {max}</span>
+    </div>
+  );
+}
 
 const PokemonCard = ({
   pokemon,
@@ -31,16 +57,6 @@ const PokemonCard = ({
   }, [pokemon]);
 
   const canManage = currentUser && trainerId && (currentUser.tipo_usuario === 'M' || currentUser.id === parseInt(trainerId));
-
-  const hpPercentage = (pokemon.max_hp || 1) > 0 ? ((pokemon.current_hp || 0) / (pokemon.max_hp || 1)) * 100 : 0;
-  const especialPercentage = (pokemon.especial_total || 1) > 0 ? ((pokemon.especial || 0) / (pokemon.especial_total || 1)) * 100 : 0;
-  const vigorPercentage = (pokemon.vigor_total || 1) > 0 ? ((pokemon.vigor || 0) / (pokemon.vigor_total || 1)) * 100 : 0;
-
-  const getHpBarColorClass = (percentage) => {
-    if (percentage > 50) return 'hp-high';
-    if (percentage > 20) return 'hp-medium';
-    return 'hp-low';
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -180,29 +196,14 @@ const PokemonCard = ({
             </div>
           ) : (
             <div>
+              {/* HP */}
+              <StatusBar value={pokemon.current_hp ?? 0} max={pokemon.max_hp ?? 10} color="limegreen" label="HP" />
+              {/* Especial */}
+              <StatusBar value={pokemon.especial ?? 10} max={pokemon.especial_total ?? 10} color="#2196f3" label="Especial" />
+              {/* Vigor */}
+              <StatusBar value={pokemon.vigor ?? 10} max={pokemon.vigor_total ?? 10} color="#ffa500" label="Vigor" />
               <p className="pokemon-details">Nível: {pokemon.level ?? 1}</p>
               <p className="pokemon-details">XP: {pokemon.xp ?? 0}</p>
-              <div className="hp-bar-container">
-                <div className="hp-bar-label">HP</div>
-                <div className="hp-bar-background">
-                  <div className={`hp-bar-progress ${getHpBarColorClass(hpPercentage)}`} style={{ width: `${hpPercentage}%` }}></div>
-                  <span className="hp-bar-text">{pokemon.current_hp ?? 0} / {pokemon.max_hp ?? 10}</span>
-                </div>
-              </div>
-              <div className="hp-bar-container">
-                <div className="hp-bar-label">Especial</div>
-                <div className="hp-bar-background">
-                  <div className="hp-bar-progress special-bar" style={{ width: `${especialPercentage}%` }}></div>
-                  <span className="hp-bar-text">{pokemon.especial ?? 10} / {pokemon.especial_total ?? 10}</span>
-                </div>
-              </div>
-              <div className="hp-bar-container">
-                <div className="hp-bar-label">Vigor</div>
-                <div className="hp-bar-background">
-                  <div className="hp-bar-progress vigor-bar" style={{ width: `${vigorPercentage}%` }}></div>
-                  <span className="hp-bar-text">{pokemon.vigor ?? 10} / {pokemon.vigor_total ?? 10}</span>
-                </div>
-              </div>
             </div>
           )
         )}
