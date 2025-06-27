@@ -105,7 +105,78 @@ const PokemonCard = ({
         {!isPokedexView && (
           isEditing ? (
             <div className="edit-stats-form">
-              {/* Campos de edição... */}
+              <div className="edit-field">
+                <label>Nível</label>
+                <input
+                  type="number"
+                  name="level"
+                  value={editData.level}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>XP</label>
+                <input
+                  type="number"
+                  name="xp"
+                  value={editData.xp}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>HP Atual</label>
+                <input
+                  type="number"
+                  name="current_hp"
+                  value={editData.current_hp}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>HP Máx</label>
+                <input
+                  type="number"
+                  name="max_hp"
+                  value={editData.max_hp}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>Especial</label>
+                <input
+                  type="number"
+                  name="especial"
+                  value={editData.especial}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>Especial Total</label>
+                <input
+                  type="number"
+                  name="especial_total"
+                  value={editData.especial_total}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>Vigor</label>
+                <input
+                  type="number"
+                  name="vigor"
+                  value={editData.vigor}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="edit-field">
+                <label>Vigor Total</label>
+                <input
+                  type="number"
+                  name="vigor_total"
+                  value={editData.vigor_total}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
           ) : (
             <div>
