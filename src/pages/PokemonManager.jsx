@@ -1,20 +1,13 @@
 // PokemonManager.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import PokemonCard from './PokemonCard'; // Importa o card
-import DeletePokemonModal from './DeletePokemonModal'; // Importa o modal
-import Modal from 'react-modal'; // Você precisará de uma biblioteca de modal, como 'react-modal'
-
-// Configure o react-modal
-Modal.setAppElement('#root'); // Evita problemas de acessibilidade
+import PokemonCard from './PokemonCard';
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 const PokemonManager = ({ trainerId, currentUser }) => {
   const [pokemons, setPokemons] = useState([]);
-  const [pokemonToDelete, setPokemonToDelete] = useState(null); // Guarda o Pokémon para exclusão
 
-  // Efeito para buscar os pokémons do treinador quando o componente carrega
   useEffect(() => {
     if (trainerId) {
       axios.get(`${apiUrl}/trainer/${trainerId}/pokemons`)
@@ -27,38 +20,18 @@ const PokemonManager = ({ trainerId, currentUser }) => {
     }
   }, [trainerId]);
 
-  // Abre o modal de confirmação
-  const handleOpenDeleteModal = (pokemon) => {
-    setPokemonToDelete(pokemon);
-  };
-
-  // Fecha o modal
-  const handleCloseModal = () => {
-    setPokemonToDelete(null);
-  };
-
-  // Função chamada pelo modal para confirmar e executar a exclusão
-  const handleConfirmDelete = async (reason) => {
-    if (!pokemonToDelete) return;
-    
-    try {
-      // Faz a chamada DELETE para o backend
-      const response = await axios.delete(`${apiUrl}/pokemon/${pokemonToDelete.id}`);
-      
-      const { deletedPokemonId } = response.data;
-
-      // ATUALIZA A TELA: Remove o pokémon da lista local
+  // Remove o pokémon da lista se foi deletado, atualiza se só editou
+  const handlePokemonUpdate = (updatedPokemon) => {
+    if (updatedPokemon.deleted) {
       setPokemons(currentPokemons =>
-        currentPokemons.filter(p => p.id !== parseInt(deletedPokemonId))
+        currentPokemons.filter(p => p.id !== updatedPokemon.id)
       );
-
-      alert(`Pokémon ${pokemonToDelete.name} foi liberado pelo motivo: ${reason}`);
-      
-    } catch (error) {
-      console.error('Falha ao excluir o Pokémon:', error);
-      alert(error.response?.data?.message || 'Ocorreu um erro ao excluir.');
-    } finally {
-      handleCloseModal(); // Fecha o modal
+    } else {
+      setPokemons(currentPokemons =>
+        currentPokemons.map(p =>
+          p.id === updatedPokemon.id ? updatedPokemon : p
+        )
+      );
     }
   };
 
@@ -72,28 +45,11 @@ const PokemonManager = ({ trainerId, currentUser }) => {
             pokemon={pokemon}
             currentUser={currentUser}
             trainerId={trainerId}
-            // A prop 'onDelete' agora chama a função que abre o modal
-            onDelete={handleOpenDeleteModal}
-            // ... (outras props como onUpdate, onDeposit, etc.)
+            onUpdate={handlePokemonUpdate}
+            // Pode passar onDeposit, onWithdraw etc, se precisar
           />
         ))}
       </div>
-
-      <Modal
-        isOpen={!!pokemonToDelete}
-        onRequestClose={handleCloseModal}
-        className="modal"
-        overlayClassName="overlay"
-      >
-        {pokemonToDelete && (
-          <DeletePokemonModal
-            pokemonName={pokemonToDelete.name}
-            onClose={handleCloseModal}
-            // A prop 'onConfirm' agora chama a função que deleta de verdade
-            onConfirm={handleConfirmDelete}
-          />
-        )}
-      </Modal>
     </div>
   );
 };
