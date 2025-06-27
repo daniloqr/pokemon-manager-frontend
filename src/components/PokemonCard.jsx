@@ -87,18 +87,18 @@ const PokemonCard = ({
   };
 
   // Funções de salvamento automático ao soltar a barra (onChangeCommitted)
-  const autoSave = async (key, value, successMsg, errorMsg) => {
-    setEditData(prev => ({ ...prev, [key]: value }));
-    try {
-      await axios.put(`${apiUrl}/pokemon-stats/${pokemon.id}`, {
-        ...editData,
-        [key]: value,
-      });
-      alert(successMsg);
-    } catch (error) {
-      alert(errorMsg);
-    }
-  };
+const autoSave = async (key, value, successMsg, errorMsg) => {
+  setEditData(prev => ({ ...prev, [key]: value }));
+  try {
+    // Envie só o campo alterado, não o editData inteiro!
+    await axios.put(`${apiUrl}/pokemon-stats/${pokemon.id}`, {
+      [key]: value,
+    });
+    alert(successMsg);
+  } catch (error) {
+    alert(errorMsg);
+  }
+};
 
   if (pokemon.deleted) return null; // Esconde imediatamente se foi deletado
 
