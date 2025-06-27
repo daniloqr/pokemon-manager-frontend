@@ -77,23 +77,10 @@ const PokemonCard = ({
   const handleDeposit = (e) => { e.stopPropagation(); if (onDeposit) onDeposit(pokemon.id, pokemon.name); };
   const handleWithdraw = (e) => { e.stopPropagation(); if (onWithdraw) onWithdraw(pokemon.id, pokemon.name); };
 
-  // NOVO: Excluir direto com confirm
-  const handleDelete = async (e) => {
-    e.stopPropagation();
-    const confirmDelete = window.confirm(`Deseja realmente excluir ${pokemon.name}?`);
-    if (!confirmDelete) return;
-    try {
-      setIsDeleting(true);
-      await axios.delete(`${apiUrl}/pokemon/${pokemon.id}`);
-      // Atualiza removendo o Pokémon do time
-      if (onUpdate) onUpdate({ ...pokemon, deleted: true }); // Sinaliza para o pai remover do array
-      alert(`${pokemon.name} foi excluído com sucesso!`);
-    } catch (err) {
-      alert('Erro ao excluir o Pokémon.');
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+const handleDelete = (e) => {
+  e.stopPropagation();
+  alert('Teste: Você clicou em EXCLUIR!');
+};
 
   if (pokemon.deleted) return null; // Esconde imediatamente se foi deletado
 
