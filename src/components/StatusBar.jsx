@@ -49,7 +49,7 @@ export default function StatusBar({
         max={max}
         color="primary"
         barcolor={color}
-        
+        disabled={true}
         onChange={onChange}
       />
       <span style={{ marginLeft: 12, color: '#fff', fontWeight: 'bold' }}>
