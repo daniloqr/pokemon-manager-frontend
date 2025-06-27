@@ -96,7 +96,6 @@ const PokemonCard = ({
         {!isPokedexView && (
           isEditing ? (
             <div>
-              {/* Barras interativas */}
               <StatusBar
                 value={editData.current_hp}
                 max={editData.max_hp}
@@ -121,7 +120,6 @@ const PokemonCard = ({
                 disabled={false}
                 onChange={(e, newValue) => setEditData(prev => ({ ...prev, vigor: newValue }))}
               />
-              {/* Inputs opcionais para os valores máximos */}
               <div className="edit-field">
                 <label>HP Máx</label>
                 <input
@@ -170,7 +168,6 @@ const PokemonCard = ({
             </div>
           ) : (
             <div>
-              {/* Barras só leitura */}
               <StatusBar value={pokemon.current_hp ?? 0} max={pokemon.max_hp ?? 10} color="#ff4a4a" label="HP" disabled={true} />
               <StatusBar value={pokemon.especial ?? 10} max={pokemon.especial_total ?? 10} color="#00ff99" label="Especial" disabled={true} />
               <StatusBar value={pokemon.vigor ?? 10} max={pokemon.vigor_total ?? 10} color="#2196f3" label="Vigor" disabled={true} />
