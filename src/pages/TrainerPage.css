@@ -1,144 +1,85 @@
-/* Estrutura principal da página */
-.trainer-page-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr; /* Coluna lateral e conteúdo principal */
-  gap: 24px;
-  padding: 24px;
-  max-width: 1400px;
+.trainer-page-container {
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 120px 5% 40px;
+  color: #f0f0f0;
 }
 
-/* Painel de informações do treinador (barra lateral) */
-.trainer-info-panel {
-  background-color: #2e2e2e;
-  border-radius: 8px;
-  padding: 20px;
+.trainer-header {
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  align-self: flex-start; /* Impede que estique verticalmente */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  gap: 20px;
+  padding: 30px;
+  background-color: rgba(10, 25, 47, 0.85);
+  border-radius: 12px;
+  margin-bottom: 40px;
 }
 
 .trainer-header-avatar {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background-size: cover;
+  border: 2px solid #334155;
+  box-shadow: none;
+  background-size: contain;
   background-position: center;
-  border: 4px solid #444;
-  margin-bottom: 16px;
+  background-repeat: no-repeat;
 }
 
 .trainer-header-name {
-  color: #f0f0f0;
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-.trainer-stats {
-  width: 100%;
-  border-top: 1px solid #444;
-  padding-top: 20px;
-  margin-bottom: 20px;
-}
-
-.trainer-stats p {
-  color: #ccc;
-  font-size: 1rem;
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-}
-
-.trainer-stats p strong {
-  color: #fff;
-}
-
-.trainer-actions {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 10px;
-}
-
-.action-button {
-  background-color: #4a90e2;
-  color: white;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 5px;
-  text-align: center;
+  font-size: 3rem;
   font-weight: bold;
-  transition: background-color 0.2s;
+  text-shadow: 2px 2px 4px #3b4cca;
 }
 
-.action-button:hover {
-  background-color: #357abd;
-}
-
-/* Seção principal dos Pokémon */
 .pokemon-section {
-  background-color: #2e2e2e;
+  text-align: center;
+}
+
+.pokemon-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #ffcb05;
+}
+
+.pokemon-list-placeholder {
+  padding: 50px;
+  border: 2px dashed #334155;
   border-radius: 8px;
-  padding: 24px;
+  background-color: rgba(30, 41, 59, 0.5);
 }
 
-.pokemon-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #444;
-  padding-bottom: 16px;
+.pokemon-list-placeholder p {
+  font-size: 1.2rem;
+  color: #a0a0a0;
 }
 
-.pokemon-section-header h2 {
-  color: #f0f0f0;
-  font-size: 1.8rem;
-  margin: 0;
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 }
 
 .add-pokemon-button {
-  background-color: #50e3c2;
-  color: #222;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 5px;
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #ffcb05;
+  color: #3b4cca;
   font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
   transition: background-color 0.2s;
 }
 
 .add-pokemon-button:hover {
-  background-color: #34c7a9;
+  background-color: #e0b404;
 }
 
-/* Grid de Pokémon */
-.pokemon-grid {
-  display: grid;
-  /* Cria colunas responsivas: preenche com o máximo de colunas de 260px que couberem */
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-  min-height: 200px; /* Garante espaço para arrastar itens */
-}
-
-/* Mensagens de Loading e Erro */
-.loading-message, .error-message {
-  color: white;
+.add-more-container {
+  margin-top: 40px;
   text-align: center;
-  margin-top: 100px;
-  font-size: 1.5rem;
-}
-
-.pokemon-list-placeholder {
-  color: #888;
-  text-align: center;
-  padding: 40px;
-}
-
-/* Media Query para telas menores */
-@media (max-width: 768px) {
-  .trainer-page-layout {
-    grid-template-columns: 1fr; /* Volta para uma única coluna */
-  }
 }
