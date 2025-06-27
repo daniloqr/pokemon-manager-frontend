@@ -86,19 +86,18 @@ const PokemonCard = ({
     }
   };
 
-  // Funções de salvamento automático ao soltar a barra (onChangeCommitted)
-const autoSave = async (key, value, successMsg, errorMsg) => {
-  setEditData(prev => ({ ...prev, [key]: value }));
-  try {
-    // Envie só o campo alterado, não o editData inteiro!
-    await axios.put(`${apiUrl}/pokemon-stats/${pokemon.id}`, {
-      [key]: value,
-    });
-    alert(successMsg);
-  } catch (error) {
-    alert(errorMsg);
-  }
-};
+  // Função para auto-salvar campo individual ao soltar a barra
+  const autoSave = async (key, value, successMsg, errorMsg) => {
+    setEditData(prev => ({ ...prev, [key]: value }));
+    try {
+      await axios.put(`${apiUrl}/pokemon-stats/${pokemon.id}`, {
+        [key]: value,
+      });
+      alert(successMsg);
+    } catch (error) {
+      alert(errorMsg);
+    }
+  };
 
   if (pokemon.deleted) return null; // Esconde imediatamente se foi deletado
 
@@ -111,6 +110,7 @@ const autoSave = async (key, value, successMsg, errorMsg) => {
         {!isPokedexView && (
           isEditing ? (
             <div>
+              {/* HP ATUAL */}
               <StatusBar
                 value={editData.current_hp}
                 max={editData.max_hp}
@@ -121,9 +121,10 @@ const autoSave = async (key, value, successMsg, errorMsg) => {
                   setEditData(prev => ({ ...prev, current_hp: newValue }))
                 }
                 onChangeCommitted={(e, newValue) =>
-                  autoSave('current_hp', newValue, 'HP salvo com sucesso!', 'Erro ao salvar HP!')
+                  autoSave('current_hp', newValue, 'HP Atual salvo com sucesso!', 'Erro ao salvar HP Atual!')
                 }
               />
+              {/* ESPECIAL ATUAL */}
               <StatusBar
                 value={editData.especial}
                 max={editData.especial_total}
@@ -137,6 +138,7 @@ const autoSave = async (key, value, successMsg, errorMsg) => {
                   autoSave('especial', newValue, 'Especial salvo com sucesso!', 'Erro ao salvar Especial!')
                 }
               />
+              {/* VIGOR ATUAL */}
               <StatusBar
                 value={editData.vigor}
                 max={editData.vigor_total}
