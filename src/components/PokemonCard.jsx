@@ -150,5 +150,5 @@ const handleDelete = (e) => {
     </div>
   );
 };
-
+console.log("PokemonCard RENDERIZANDO AGORA!");
 export default PokemonCard;
