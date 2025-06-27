@@ -55,6 +55,7 @@ const TrainerPage = ({ user, onLogout }) => {
     );
   };
 
+  // CORRETO: recebe o pokémon e abre o modal
   const handleOpenDeleteModal = (pokemon) => {
     setDeletingPokemon(pokemon);
   };
@@ -114,7 +115,7 @@ const TrainerPage = ({ user, onLogout }) => {
                   trainerId={trainerInfo.id}
                   onDeposit={handleDepositPokemon}
                   onUpdate={handlePokemonUpdate}
-                  onDelete={handleOpenDeleteModal}   // <-- Corrigido aqui!
+                  onDelete={handleOpenDeleteModal}   // <-- Prop correta!
                   onEdit={() => handleOpenEditModal(pokemon)}
                 />
               ))}

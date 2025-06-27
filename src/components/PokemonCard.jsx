@@ -1,4 +1,3 @@
-// PokemonCard.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './PokemonCard.css';
@@ -12,6 +11,7 @@ const PokemonCard = ({
   onDeposit,
   onUpdate,
   onWithdraw,
+  onDelete, // <-- RECEBE a função do pai!
   isPokedexView = false
 }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -76,10 +76,11 @@ const PokemonCard = ({
   const handleDeposit = (e) => { e.stopPropagation(); if (onDeposit) onDeposit(pokemon.id, pokemon.name); };
   const handleWithdraw = (e) => { e.stopPropagation(); if (onWithdraw) onWithdraw(pokemon.id, pokemon.name); };
 
-const handleDelete = (e) => {
-  e.stopPropagation();
-  alert('Teste: Você clicou em EXCLUIR!');
-};
+  // AQUI ESTÁ O FLUXO CORRETO PARA ABRIR O MODAL DE EXCLUSÃO
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    if (onDelete) onDelete(pokemon);
+  };
 
   if (pokemon.deleted) return null; // Esconde imediatamente se foi deletado
 
@@ -92,7 +93,7 @@ const handleDelete = (e) => {
         {!isPokedexView && (
           isEditing ? (
             <div className="edit-stats-form">
-            
+              {/* Campos de edição... */}
             </div>
           ) : (
             <div>
@@ -135,12 +136,14 @@ const handleDelete = (e) => {
               <button className="pokemon-edit-button" onClick={handleEditClick}>Editar</button>
               {onDeposit && <button className="pokemon-deposit-button" onClick={handleDeposit}>Depositar</button>}
               {onWithdraw && <button className="pokemon-withdraw-button" onClick={handleWithdraw}>Retirar</button>}
-              {currentUser?.tipo_usuario === 'M' && (
+              {currentUser?.tipo_usuario === 'M' && onDelete && (
                 <button
                   className="pokemon-delete-button"
                   onClick={handleDelete}
                   disabled={isDeleting}
-                >Excluir teste</button>
+                >
+                  Excluir
+                </button>
               )}
             </>
           )}
@@ -149,5 +152,4 @@ const handleDelete = (e) => {
     </div>
   );
 };
-console.log("PokemonCard RENDERIZANDO AGORA!");
 export default PokemonCard;
