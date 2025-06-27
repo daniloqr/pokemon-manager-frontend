@@ -4,7 +4,6 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import PokemonCard from '../components/PokemonCard';
 import Modal from '../components/Modal';
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import './TrainerPage.css';
 
 const TrainerPage = ({ user, onLogout }) => {
@@ -48,7 +47,7 @@ const TrainerPage = ({ user, onLogout }) => {
     }
   };
 
-  // Remove da lista se foi deletado, atualiza se só editou
+  // Aqui a função de update já remove da lista se for deletado:
   const handlePokemonUpdate = (updatedPokemon) => {
     if (updatedPokemon.deleted) {
       setPokemonTeam(currentTeam => currentTeam.filter(p => p.id !== updatedPokemon.id));
@@ -67,16 +66,6 @@ const TrainerPage = ({ user, onLogout }) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingPokemon(null);
-  };
-
-  // Drag & Drop handler
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-    const reordered = Array.from(pokemonTeam);
-    const [removed] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, removed);
-    setPokemonTeam(reordered);
-    // Aqui você pode fazer um POST para o backend salvar a ordem, se quiser.
   };
 
   if (loading) return <p style={{ color: 'white', textAlign: 'center', marginTop: '100px' }}>Carregando...</p>;
@@ -99,45 +88,19 @@ const TrainerPage = ({ user, onLogout }) => {
         <main className="pokemon-section">
           <h2>Equipe de Pokémon</h2>
           {pokemonTeam.length > 0 ? (
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="pokemon-grid" direction="horizontal">
-                {(provided) => (
-                  <div
-                    className="pokemon-grid"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{ display: 'flex', gap: '16px', minHeight: 300 }}
-                  >
-                    {pokemonTeam.map((pokemon, index) => (
-                      <Draggable key={pokemon.id} draggableId={pokemon.id.toString()} index={index}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={{
-                              ...provided.draggableProps.style,
-                              minWidth: 250,
-                              maxWidth: 300,
-                            }}
-                          >
-                            <PokemonCard
-                              pokemon={pokemon}
-                              currentUser={user}
-                              trainerId={trainerInfo.id}
-                              onDeposit={handleDepositPokemon}
-                              onUpdate={handlePokemonUpdate}
-                              onEdit={() => handleOpenEditModal(pokemon)}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
+            <div className="pokemon-grid">
+              {pokemonTeam.map(pokemon => (
+                <PokemonCard
+                  key={pokemon.id}
+                  pokemon={pokemon}
+                  currentUser={user}
+                  trainerId={trainerInfo.id}
+                  onDeposit={handleDepositPokemon}
+                  onUpdate={handlePokemonUpdate}
+                  onEdit={() => handleOpenEditModal(pokemon)}
+                />
+              ))}
+            </div>
           ) : (
             <div className="pokemon-list-placeholder">
               <p>Nenhum Pokémon cadastrado na equipe.</p>
