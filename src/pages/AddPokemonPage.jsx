@@ -58,8 +58,15 @@ const AddPokemonPage = ({ user, onLogout }) => {
       name: pokemonPreview.name,
       type: pokemonPreview.type,
       image_url: pokemonPreview.imageUrl,
-      level: level,
+      level: Number(level),
       trainer_id: trainerId,
+      xp: 0,
+      max_hp: 10,
+      current_hp: 10,
+      especial: 10,
+      especial_total: 10,
+      vigor: 10,
+      vigor_total: 10
     };
 
     try {
